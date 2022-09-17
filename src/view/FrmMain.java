@@ -32,7 +32,6 @@ public class FrmMain extends javax.swing.JFrame {
         initComponents();
         PnlMain fondo = new PnlMain();
         tpContent.add("¡Bienvenido!", fondo);
-
     }
 
     /**
@@ -81,9 +80,19 @@ public class FrmMain extends javax.swing.JFrame {
         btnMyFiles.setForeground(new java.awt.Color(255, 255, 255));
         btnMyFiles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/settings-icon.png"))); // NOI18N
         btnMyFiles.setText("Configuración");
+        btnMyFiles.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnMyFilesMouseClicked(evt);
+            }
+        });
 
         jMenu6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/file.png"))); // NOI18N
         jMenu6.setText("Mis archivos");
+        jMenu6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu6MouseClicked(evt);
+            }
+        });
         btnMyFiles.add(jMenu6);
 
         btnLogout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/close-box.png"))); // NOI18N
@@ -154,7 +163,6 @@ public class FrmMain extends javax.swing.JFrame {
         } else {
             PnlBG bg = new PnlBG(id_user,file);
             tpContent.add("Balance General", bg);
-
             btnClosePage.setEnabled(true);
         }
 
@@ -202,6 +210,19 @@ public class FrmMain extends javax.swing.JFrame {
             this.dispose();
        }
     }//GEN-LAST:event_btnLogoutMouseClicked
+
+    private void jMenu6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu6MouseClicked
+        DlgMyFiles files = new DlgMyFiles(this,true);
+        files.setLocationRelativeTo(this);
+        files.setUser(id_user);
+        files.setVisible(true);
+        
+    }//GEN-LAST:event_jMenu6MouseClicked
+
+    private void btnMyFilesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMyFilesMouseClicked
+        
+        
+    }//GEN-LAST:event_btnMyFilesMouseClicked
 
     private boolean ComprobationPages(String name) {
         boolean rs = true;

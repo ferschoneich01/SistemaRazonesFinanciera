@@ -348,9 +348,9 @@ public class FrmLogin extends javax.swing.JFrame {
                 if (pass.equals(u.getPassword())) {
                     JOptionPane.showMessageDialog(this, "¡Bienvenido al sistema!");
                     FrmMain main = new FrmMain();
-                    main.setId(uc.getUser(txtNombreUsuario.getText()).getId_user());
                     main.setLocationRelativeTo(this);
                     main.setVisible(true);
+                    main.setId(uc.getUser(txtNombreUsuario.getText()).getId_user());
                     this.dispose();
                 } else {
                     JOptionPane.showMessageDialog(this, "Contraseña incorrecta");

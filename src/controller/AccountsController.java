@@ -12,7 +12,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import model.accounts;
 import model.accounts_finance_state;
+import model.file;
 
 /**
  *
@@ -93,6 +95,26 @@ public class AccountsController {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error de conexión:" + e.getMessage());
         }
+    }
+    
+    public ArrayList<file> getFiles(int id_user){
+        ArrayList<file> fileList = new ArrayList<file>();
+        try {
+            conn = conectar.getConexion();
+            sql = "select * from files where id_user = "+id_user;
+            Statement s = conn.createStatement();
+            ResultSet rs = s.executeQuery(sql);
+
+            //rellenado de objeto
+            while (rs.next()) {
+                fileList.add(new file(rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getString(4)));
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error de conexión:" + e.getMessage());
+        }
+        
+        return fileList;
     }
     
 }
