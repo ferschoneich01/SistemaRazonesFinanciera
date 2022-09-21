@@ -5,6 +5,7 @@
  */
 package view;
 
+import controller.AccountsController;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -19,12 +20,17 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
- * @author Fernando
+ * @author Scarleth
  */
 public class FrmMain extends javax.swing.JFrame {
 
     public int id_user;
     public String file;
+    AccountsController ac = new AccountsController();
+    public PnlBG bg;
+    public PnlER er;
+    public PnlRF rf;
+
     /**
      * Creates new form FrmMain
      */
@@ -157,11 +163,11 @@ public class FrmMain extends javax.swing.JFrame {
         this.id_user = id_user;
     }
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
-        CreateFile("Balance General");
+        CreateFile("Balance General", "BG_");
         if (ComprobationPages("Balance General") == false) {
             JOptionPane.showMessageDialog(this, "Ya tienes abierta una pestaña.");
         } else {
-            PnlBG bg = new PnlBG(id_user,file);
+            bg = new PnlBG(id_user, file);
             tpContent.add("Balance General", bg);
             btnClosePage.setEnabled(true);
         }
@@ -170,32 +176,54 @@ public class FrmMain extends javax.swing.JFrame {
 
 
     private void btnClosePageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClosePageMouseClicked
-        
+
         if (tpContent.getComponentCount() == 1) {
-            tpContent.remove(tpContent.getSelectedIndex());
-            btnClosePage.setEnabled(false);
+            if (JOptionPane.showConfirmDialog(this, "¿Desea cerrar la pestaña?") == 0) {
+                //No se guardaran los datos
+                tpContent.remove(tpContent.getSelectedIndex());
+                if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Balance General")) {
+                    ac.deleteFile(getIdFIle("BG_" + bg.lblFileName.getText()));
+                } else if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Estado de resultado")) {
+                    ac.deleteFile(getIdFIle("ER_"));
+                } else if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Razones FInancieras")) {
+                    ac.deleteFile(getIdFIle("RF_"));
+                }
+                btnClosePage.setEnabled(false);
+            }
+
         } else if (tpContent.getComponentCount() > 1) {
-            tpContent.remove(tpContent.getSelectedIndex());
+            if (JOptionPane.showConfirmDialog(this, "¿Desea cerrar el documento?") == 0) {
+                //Se guardaran los datos
+                if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Balance General")) {
+                    ac.deleteFile(getIdFIle("BG_" + bg.lblFileName.getText()));
+                } else if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Estado de resultado")) {
+                    ac.deleteFile(getIdFIle("ER_"));
+                } else if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Razones FInancieras")) {
+                    ac.deleteFile(getIdFIle("RF_"));
+                }
+                tpContent.remove(tpContent.getSelectedIndex());
+
+            }
         }
     }//GEN-LAST:event_btnClosePageMouseClicked
 
     private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
-        CreateFile("Estado de resultado");
+        CreateFile("Estado de resultado", "ER_");
         if (ComprobationPages("Estado de resultado") == false) {
             JOptionPane.showMessageDialog(this, "Ya tienes abierta una pestaña.");
         } else {
-            PnlER er = new PnlER();
+            er = new PnlER();
             tpContent.add("Estado de resultado", er);
             btnClosePage.setEnabled(true);
         }
     }//GEN-LAST:event_jMenu3MouseClicked
-        
+
     private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
-        CreateFile("Razones Financieras");
+        CreateFile("Razones Financieras", "RF_");
         if (ComprobationPages("Razones Financieras") == false) {
             JOptionPane.showMessageDialog(this, "Ya tienes abierta una pestaña.");
         } else {
-            PnlRF rf = new PnlRF();
+            rf = new PnlRF();
             tpContent.add("Razones Financieras", rf);
             btnClosePage.setEnabled(true);
         }
@@ -203,25 +231,25 @@ public class FrmMain extends javax.swing.JFrame {
 
     private void btnLogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLogoutMouseClicked
         //cerrar sesion
-       if(JOptionPane.showConfirmDialog(this, "¿Quiere cerrar su sesion?") == 0){
+        if (JOptionPane.showConfirmDialog(this, "¿Quiere cerrar su sesion?") == 0) {
             FrmLogin login = new FrmLogin();
             login.setLocationRelativeTo(null);
             login.setVisible(true);
             this.dispose();
-       }
+        }
     }//GEN-LAST:event_btnLogoutMouseClicked
 
     private void jMenu6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu6MouseClicked
-        DlgMyFiles files = new DlgMyFiles(this,true);
+        DlgMyFiles files = new DlgMyFiles(this, true);
         files.setLocationRelativeTo(this);
         files.setUser(id_user);
         files.setVisible(true);
-        
+
     }//GEN-LAST:event_jMenu6MouseClicked
 
     private void btnMyFilesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMyFilesMouseClicked
-        
-        
+
+
     }//GEN-LAST:event_btnMyFilesMouseClicked
 
     private boolean ComprobationPages(String name) {
@@ -234,21 +262,35 @@ public class FrmMain extends javax.swing.JFrame {
 
         return rs;
     }
-    
-    private void CreateFile(String FinanceState){
+
+    private void CreateFile(String FinanceState, String AvFN) {
         boolean flag = true;
-        while(flag){
-            file = JOptionPane.showInputDialog("Nombre del archivo de "+FinanceState+":");
-            if(file.isEmpty()){
+        while (flag) {
+            file = JOptionPane.showInputDialog("Nombre del archivo de " + FinanceState + ":");
+            if (file.isEmpty()) {
                 //El archivo no tiene nombre
                 flag = true;
-            }else{
+            } else {
                 //El archivo tiene nombre
                 flag = false;
+                ac.CreateFile(file, id_user, AvFN);
             }
         }
-        
+
     }
+
+    public int getIdFIle(String extension) {
+        int id_file = 0;
+        for (int j = 0; j < ac.getFiles(id_user).size(); j++) {
+
+            if (ac.getFiles(id_user).get(j).getName().equals(extension)) {
+                id_file = ac.getFiles(id_user).get(j).getId_file();
+            }
+        }
+
+        return id_file;
+    }
+
     /**
      * @param args the command line arguments
      */

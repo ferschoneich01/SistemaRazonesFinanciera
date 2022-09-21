@@ -19,6 +19,14 @@ public class accounts {
     public accounts() {
     }
 
+    public accounts(int id_account, int id_finance_state, int id_file, float amount) {
+        this.id_account = id_account;
+        this.id_finance_state = id_finance_state;
+        this.id_file = id_file;
+        this.amount = amount;
+    }
+    
+    
     public int getId_account() {
         return id_account;
     }

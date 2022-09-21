@@ -7,6 +7,7 @@ package view;
 
 import controller.AccountsController;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import model.file;
 
 /**
@@ -14,7 +15,10 @@ import model.file;
  * @author Scarleth
  */
 public class DlgMyFiles extends javax.swing.JDialog {
+
     private int id_user;
+    AccountsController ac = new AccountsController();
+    ArrayList<file> fileList;
     /**
      * Creates new form DlgMyFiles
      */
@@ -36,7 +40,7 @@ public class DlgMyFiles extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         TreeFiles = new javax.swing.JTree();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -69,10 +73,15 @@ public class DlgMyFiles extends javax.swing.JDialog {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Mis archivos");
 
-        jButton1.setBackground(new java.awt.Color(204, 0, 0));
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/close-page.png"))); // NOI18N
-        jButton1.setText("Eliminar");
+        btnDelete.setBackground(new java.awt.Color(204, 0, 0));
+        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
+        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/close-page.png"))); // NOI18N
+        btnDelete.setText("Eliminar");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(51, 153, 255));
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
@@ -90,7 +99,7 @@ public class DlgMyFiles extends javax.swing.JDialog {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(jLabel1))
                 .addContainerGap(21, Short.MAX_VALUE))
@@ -106,7 +115,7 @@ public class DlgMyFiles extends javax.swing.JDialog {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(16, 16, 16))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(35, 35, 35)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(70, 70, 70))))
@@ -116,22 +125,40 @@ public class DlgMyFiles extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
-    public void setUser(int id_user){
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        if(JOptionPane.showConfirmDialog(this, "¿Desea eliminar el archivo?") == 0){
+            
+            ac.deleteFile(getIdFIle(fileList.get(obtenerIndiceSeleccionadoEnJTree(TreeFiles)-1).getName()));
+        }
+        
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private int obtenerIndiceSeleccionadoEnJTree(javax.swing.JTree arbol) {
+        // JTree auxiliar
+        javax.swing.JTree aux = new javax.swing.JTree(arbol.getModel());
+        // expande los nodos del JTree auxiliar para luego obtener el numero de fila correctamente
+        for (int i = 0; i < aux.getRowCount(); i++) {
+            aux.expandRow(i);
+        }
+        // Obtiene el numero de fila del elemento seleccionado basandose en la ruta hasta el elemento
+        return aux.getRowForPath(arbol.getSelectionPath()) - 1;
+    }
+
+    public void setUser(int id_user) {
         this.id_user = id_user;
         AccountsController ac = new AccountsController();
-        ArrayList<file> fileList = ac.getFiles(id_user);
-        System.out.println(id_user);
+        fileList = ac.getFiles(id_user);
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
         javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Archivos");
         javax.swing.tree.DefaultMutableTreeNode treeNode3;
-        for(int i=0; i < fileList.size(); i++){
+        for (int i = 0; i < fileList.size(); i++) {
             treeNode3 = new javax.swing.tree.DefaultMutableTreeNode(fileList.get(i).getName());
             treeNode2.add(treeNode3);
             System.out.println(fileList.get(i).getName());
         }
-        
-       treeNode1.add(treeNode2);
+
+        treeNode1.add(treeNode2);
         /*treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Estado de resulado");
         treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("ER_FEBRERO_2019");
         treeNode2.add(treeNode3);
@@ -141,8 +168,21 @@ public class DlgMyFiles extends javax.swing.JDialog {
         treeNode2.add(treeNode3);
         treeNode1.add(treeNode2);*/
         TreeFiles.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-        
+
     }
+
+    public int getIdFIle(String extension) {
+        int id_file = 0;
+        for (int j = 0; j < ac.getFiles(id_user).size(); j++) {
+
+            if (ac.getFiles(id_user).get(j).getName().equals(extension)) {
+                id_file = ac.getFiles(id_user).get(j).getId_file();
+            }
+        }
+
+        return id_file;
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -187,7 +227,7 @@ public class DlgMyFiles extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree TreeFiles;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

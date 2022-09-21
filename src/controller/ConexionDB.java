@@ -25,7 +25,6 @@ public class ConexionDB {
 
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("show databases;");
-            System.out.println("Connected");
         } catch (Exception e) {
             System.out.println(e);
         }
