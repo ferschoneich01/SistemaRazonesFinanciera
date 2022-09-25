@@ -1,61 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="84cbb99e-fca6-4c92-acf4-2e85ae71d394">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4aee5940-ea9f-4ef8-8743-0299a8a179aa">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<subDataset name="dataset1" uuid="75e025e5-bfce-4c1b-8e88-8e15a556846e"/>
 	<queryString>
-		<![CDATA[select * from users]]>
+		<![CDATA[select * from accounts a inner join accounts_finance_state afs on a.id_finance_state = afs.id_finance_state]]>
 	</queryString>
-	<field name="id_user" class="java.lang.Integer">
+	<field name="id_account" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="fullname" class="java.lang.String">
+	<field name="id_finance_state" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="username" class="java.lang.String">
+	<field name="id_file" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="pass" class="java.lang.String">
+	<field name="amount" class="java.lang.Float">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="subtype" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="finance_state" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="name_1" class="java.lang.Integer" resetType="Column" calculation="Count">
+		<variableExpression><![CDATA[$F{name}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
 		<band height="79" splitType="Stretch">
 			<staticText>
-				<reportElement x="142" y="19" width="268" height="38" uuid="9fa83938-5c5f-447f-bb4a-2702a1f8f8bc"/>
+				<reportElement x="16" y="0" width="240" height="41" uuid="9c70bbfd-d2f3-43da-86b5-579475796e01"/>
 				<textElement>
-					<font size="25"/>
+					<font size="26"/>
 				</textElement>
-				<text><![CDATA[Reporte de USUARIOS]]></text>
+				<text><![CDATA[Balance General]]></text>
 			</staticText>
-		</band>
-	</title>
-	<pageHeader>
-		<band height="35" splitType="Stretch">
-			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="214" y="0" width="132" height="35" uuid="70735c27-9cc1-412b-b841-a5c88004437a"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+			<textField pattern="dd MMMMM yyyy">
+				<reportElement x="16" y="41" width="100" height="20" uuid="22276d11-fe1e-4140-8696-21b9cda85862"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="61" splitType="Stretch"/>
+		<band height="34" splitType="Stretch">
+			<staticText>
+				<reportElement x="16" y="14" width="100" height="20" uuid="3d03f818-cdc7-4fa3-b32f-adfc5cb86b3a"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Activos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="409" y="14" width="100" height="20" uuid="f3bb6fbf-1fdd-47f1-88a1-afb09359859e"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto]]></text>
+			</staticText>
+		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch">
-			<componentElement>
-				<reportElement x="73" y="35" width="400" height="50" uuid="66572816-0416-48fa-bad6-2696ab1d5472"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="dataset1" uuid="b158d482-4c19-47e0-91a5-cc4be8a4a830">
-						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource(1)]]></dataSourceExpression>
-					</datasetRun>
-					<jr:listContents height="50" width="0"/>
-				</jr:list>
-			</componentElement>
+		<band height="41" splitType="Stretch">
+			<textField>
+				<reportElement x="16" y="14" width="100" height="20" uuid="acc9cef5-fc21-4002-9e2c-4c566f3c676f"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="409" y="14" width="100" height="20" uuid="adebb282-a6de-421e-b61f-cbac7ba0eb5f"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>

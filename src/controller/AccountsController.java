@@ -11,11 +11,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import model.accounts;
 import model.accountsTableModel;
 import model.accounts_finance_state;
 import model.file;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -203,5 +214,29 @@ public class AccountsController {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error de conexión:" + e.getMessage());
         }
+    }
+    
+    public void viewReportBG(){
+        
+        try {
+            conn = conectar.getConexion();
+            
+            JasperReport reporte = null;
+            String path = "src\\view\\report\\reportBG.jasper";
+
+            reporte = (JasperReport) JRLoader.loadObjectFromFile(path);
+            
+            JasperPrint jprint = JasperFillManager.fillReport(reporte, null, conn);
+            
+            JasperViewer view = new JasperViewer(jprint, false);
+            
+            view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            
+            view.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(AccountsController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+        
     }
 }

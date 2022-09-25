@@ -24,6 +24,8 @@ public class PnlBG extends javax.swing.JPanel {
     ArrayList<accounts> listaAccounts = new ArrayList<accounts>();
     public int id_user;
     public String file_name;
+    //variable que indica si el archivo esta guardado
+    public boolean guardado = false;
 
     /**
      * Creates new form PnlBG
@@ -294,6 +296,11 @@ public class PnlBG extends javax.swing.JPanel {
         btnGenerarBalance.setForeground(new java.awt.Color(255, 255, 255));
         btnGenerarBalance.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/bg.png"))); // NOI18N
         btnGenerarBalance.setText("GENERAR BALANCE");
+        btnGenerarBalance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarBalanceActionPerformed(evt);
+            }
+        });
 
         lblFileName.setFont(new java.awt.Font("Dialog", 2, 12)); // NOI18N
         lblFileName.setForeground(new java.awt.Color(204, 204, 204));
@@ -303,10 +310,6 @@ public class PnlBG extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel8)
-                .addGap(289, 289, 289))
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -318,9 +321,17 @@ public class PnlBG extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(pnlContentControlss, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnGenerarBalance, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(spContentTable))
                         .addContainerGap(42, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addGap(289, 289, 289))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnGenerarBalance)
+                        .addGap(33, 33, 33))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -335,9 +346,9 @@ public class PnlBG extends javax.swing.JPanel {
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(spContentTable, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnGenerarBalance)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -399,6 +410,11 @@ public class PnlBG extends javax.swing.JPanel {
        
         
     }//GEN-LAST:event_btnEliminarCuentaActionPerformed
+
+    private void btnGenerarBalanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarBalanceActionPerformed
+        guardado = true;
+        ac.viewReportBG();
+    }//GEN-LAST:event_btnGenerarBalanceActionPerformed
 
     public void updateTable() {
         String[][] contentTable = new String[ac.getAccountsTable(getIdFIle("BG_")).size()][3];

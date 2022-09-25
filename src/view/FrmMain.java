@@ -176,35 +176,50 @@ public class FrmMain extends javax.swing.JFrame {
 
 
     private void btnClosePageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClosePageMouseClicked
-
-        if (tpContent.getComponentCount() == 1) {
-            if (JOptionPane.showConfirmDialog(this, "¿Desea cerrar la pestaña?") == 0) {
-                //No se guardaran los datos
-                tpContent.remove(tpContent.getSelectedIndex());
-                if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Balance General")) {
-                    ac.deleteFile(getIdFIle("BG_" + bg.lblFileName.getText()));
-                } else if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Estado de resultado")) {
-                    ac.deleteFile(getIdFIle("ER_"));
-                } else if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Razones FInancieras")) {
-                    ac.deleteFile(getIdFIle("RF_"));
+        if (bg.guardado == false) {
+            if (tpContent.getComponentCount() == 1) {
+                if (JOptionPane.showConfirmDialog(this, "¿Desea cerrar la pestaña?") == 0) {
+                    //No se guardaran los datos
+                    tpContent.remove(tpContent.getSelectedIndex());
+                    if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Balance General")) {
+                        ac.deleteFile(getIdFIle("BG_" + bg.lblFileName.getText()));
+                    } else if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Estado de resultado")) {
+                        ac.deleteFile(getIdFIle("ER_"));
+                    } else if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Razones FInancieras")) {
+                        ac.deleteFile(getIdFIle("RF_"));
+                    }
+                    btnClosePage.setEnabled(false);
                 }
-                btnClosePage.setEnabled(false);
-            }
 
-        } else if (tpContent.getComponentCount() > 1) {
-            if (JOptionPane.showConfirmDialog(this, "¿Desea cerrar el documento?") == 0) {
-                //Se guardaran los datos
-                if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Balance General")) {
-                    ac.deleteFile(getIdFIle("BG_" + bg.lblFileName.getText()));
-                } else if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Estado de resultado")) {
-                    ac.deleteFile(getIdFIle("ER_"));
-                } else if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Razones FInancieras")) {
-                    ac.deleteFile(getIdFIle("RF_"));
+            } else if (tpContent.getComponentCount() > 1) {
+                if (JOptionPane.showConfirmDialog(this, "¿Desea cerrar el documento?") == 0) {
+                    //Se guardaran los datos
+                    if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Balance General")) {
+                        ac.deleteFile(getIdFIle("BG_" + bg.lblFileName.getText()));
+                    } else if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Estado de resultado")) {
+                        ac.deleteFile(getIdFIle("ER_"));
+                    } else if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Razones FInancieras")) {
+                        ac.deleteFile(getIdFIle("RF_"));
+                    }
+                    tpContent.remove(tpContent.getSelectedIndex());
+
                 }
-                tpContent.remove(tpContent.getSelectedIndex());
-
             }
-        }
+        }else{
+            if (tpContent.getComponentCount() == 1) {
+                if (JOptionPane.showConfirmDialog(this, "¿Desea cerrar la pestaña?") == 0) {
+                    //No se guardaran los datos
+                    tpContent.remove(tpContent.getSelectedIndex());                   
+                    btnClosePage.setEnabled(false);
+                }
+
+            } else if (tpContent.getComponentCount() > 1) {
+                if (JOptionPane.showConfirmDialog(this, "¿Desea cerrar el documento?") == 0) {
+                    tpContent.remove(tpContent.getSelectedIndex());
+                }
+            }
+        } 
+
     }//GEN-LAST:event_btnClosePageMouseClicked
 
     private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
