@@ -413,7 +413,7 @@ public class PnlBG extends javax.swing.JPanel {
 
     private void btnGenerarBalanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarBalanceActionPerformed
         guardado = true;
-        ac.viewReportBG();
+        ac.viewReportBG(id_user,"BG_"+file_name);
     }//GEN-LAST:event_btnGenerarBalanceActionPerformed
 
     public void updateTable() {

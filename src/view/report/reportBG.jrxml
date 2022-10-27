@@ -3,31 +3,32 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<subDataset name="Pasivos" uuid="568b0547-ad04-49db-abd2-9c05eddc108f">
+		<parameter name="user" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="file" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[select afs.name as pname,a.amount as pamount from accounts a inner join accounts_finance_state afs on a.id_finance_state = afs.id_finance_state inner join files f on f.id_file = a.id_file where f.id_user = $P{user} && f.name =$P{file} && afs.type = 'pasvio']]>
+		</queryString>
+		<field name="pname" class="java.lang.String"/>
+		<field name="pamount" class="java.lang.Float"/>
+	</subDataset>
+	<parameter name="user" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="file" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[select * from accounts a inner join accounts_finance_state afs on a.id_finance_state = afs.id_finance_state]]>
+		<![CDATA[select afs.name,a.amount from accounts a inner join accounts_finance_state afs on a.id_finance_state = afs.id_finance_state inner join files f on f.id_file = a.id_file where f.id_user = $P{user} && f.name = $P{file} && afs.type = 'activo']]>
 	</queryString>
-	<field name="id_account" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="id_finance_state" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="id_file" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="amount" class="java.lang.Float">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="subtype" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="finance_state" class="java.lang.String">
+	<field name="amount" class="java.lang.Float">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<variable name="name_1" class="java.lang.Integer" resetType="Column" calculation="Count">
@@ -39,32 +40,47 @@
 	<title>
 		<band height="79" splitType="Stretch">
 			<staticText>
-				<reportElement x="16" y="0" width="240" height="41" uuid="9c70bbfd-d2f3-43da-86b5-579475796e01"/>
-				<textElement>
-					<font size="26"/>
+				<reportElement x="152" y="0" width="240" height="41" uuid="9c70bbfd-d2f3-43da-86b5-579475796e01"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="26" isStrikeThrough="false"/>
 				</textElement>
 				<text><![CDATA[Balance General]]></text>
 			</staticText>
 			<textField pattern="dd MMMMM yyyy">
-				<reportElement x="16" y="41" width="100" height="20" uuid="22276d11-fe1e-4140-8696-21b9cda85862"/>
+				<reportElement x="455" y="0" width="100" height="20" uuid="22276d11-fe1e-4140-8696-21b9cda85862"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="152" y="41" width="240" height="30" uuid="2e876046-3621-409c-85fd-d0d6d78c76f1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Empresa]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="35" splitType="Stretch"/>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="152" y="0" width="240" height="21" uuid="99a2bbd3-3518-460d-87ad-be085ac9704c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Periodo]]></text>
+			</staticText>
+		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="34" splitType="Stretch">
+		<band height="39" splitType="Stretch">
 			<staticText>
-				<reportElement x="16" y="14" width="100" height="20" uuid="3d03f818-cdc7-4fa3-b32f-adfc5cb86b3a"/>
+				<reportElement x="16" y="19" width="100" height="20" uuid="3d03f818-cdc7-4fa3-b32f-adfc5cb86b3a"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Activos]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="409" y="14" width="100" height="20" uuid="f3bb6fbf-1fdd-47f1-88a1-afb09359859e"/>
+				<reportElement x="409" y="19" width="100" height="20" uuid="f3bb6fbf-1fdd-47f1-88a1-afb09359859e"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
@@ -73,28 +89,43 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="41" splitType="Stretch">
+		<band height="43" splitType="Stretch">
 			<textField>
-				<reportElement x="16" y="14" width="100" height="20" uuid="acc9cef5-fc21-4002-9e2c-4c566f3c676f"/>
-				<textElement>
-					<font size="12"/>
-				</textElement>
+				<reportElement x="16" y="21" width="100" height="20" uuid="c8f80c0a-69c6-4d84-b296-dc132f8b4f3f"/>
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="409" y="14" width="100" height="20" uuid="adebb282-a6de-421e-b61f-cbac7ba0eb5f"/>
-				<textElement>
-					<font size="12"/>
-				</textElement>
+				<reportElement x="409" y="21" width="100" height="20" uuid="4053bf46-2467-48a9-a829-ff1b54702cda"/>
 				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
 			</textField>
 		</band>
+		<band height="50">
+			<textField>
+				<reportElement x="16" y="20" width="100" height="20" uuid="c15f1696-728b-45bd-a50a-4987317f9a04"/>
+				<textFieldExpression><![CDATA[$F{pname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="409" y="20" width="100" height="20" uuid="6ba5a6a6-dd0d-40f1-996b-4f864b7910c2"/>
+				<textFieldExpression><![CDATA[$F{pamount}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="50"/>
+		<band height="50"/>
+		<band height="50"/>
 	</detail>
 	<columnFooter>
 		<band height="45" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="17" width="239" height="20" uuid="bbcbc798-3b87-4ec6-bddd-2313d2603ed4"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total: activos + pasivos = capital]]></text>
+			</staticText>
+		</band>
 	</pageFooter>
 	<summary>
 		<band height="42" splitType="Stretch"/>

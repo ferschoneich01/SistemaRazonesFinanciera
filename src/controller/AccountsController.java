@@ -216,18 +216,24 @@ public class AccountsController {
         }
     }
     
-    public void viewReportBG(){
+    public void viewReportBG(int id_user, String file){
         
         try {
             conn = conectar.getConexion();
             
             JasperReport reporte = null;
             String path = "src\\view\\report\\reportBG.jasper";
-
+            
+            Map parametros  = new  HashMap();
+            parametros.put("user",id_user);
+            parametros.put("file",file);
+           
+            
+            
             reporte = (JasperReport) JRLoader.loadObjectFromFile(path);
-            
-            JasperPrint jprint = JasperFillManager.fillReport(reporte, null, conn);
-            
+           //JasperPrint jsubrep = JasperFillManager.
+            JasperPrint jprint = JasperFillManager.fillReport(reporte, parametros, conn);
+           
             JasperViewer view = new JasperViewer(jprint, false);
             
             view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
