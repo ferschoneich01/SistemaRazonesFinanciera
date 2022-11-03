@@ -167,7 +167,7 @@ public class FrmMain extends javax.swing.JFrame {
         if (ComprobationPages("Balance General") == false) {
             JOptionPane.showMessageDialog(this, "Ya tienes abierta una pestaña.");
         } else {
-            bg = new PnlBG(id_user, file);
+            bg = new PnlBG(id_user, file,getIdFIle("BG_"+file));
             tpContent.add("Balance General", bg);
             btnClosePage.setEnabled(true);
         }
@@ -255,7 +255,7 @@ public class FrmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogoutMouseClicked
 
     private void jMenu6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu6MouseClicked
-        DlgMyFiles files = new DlgMyFiles(this, true);
+        FrmMyFiles files = new FrmMyFiles();
         files.setLocationRelativeTo(this);
         files.setUser(id_user);
         files.setVisible(true);

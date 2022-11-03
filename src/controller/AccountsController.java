@@ -21,6 +21,7 @@ import model.accounts;
 import model.accountsTableModel;
 import model.accounts_finance_state;
 import model.file;
+import model.file_detail;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -42,12 +43,13 @@ public class AccountsController {
     public AccountsController() {
         account = new accounts_finance_state();
         conectar = new ConexionDB();
+        conn = conectar.getConexion();
     }
 
     public ArrayList<accounts_finance_state> getAccounts(String financeState) {
         ArrayList<accounts_finance_state> accountList = new ArrayList<accounts_finance_state>();
         try {
-            conn = conectar.getConexion();
+            
             sql = "select * from accounts_finance_state where finance_state = '" + financeState + "'";
             Statement s = conn.createStatement();
             ResultSet rs = s.executeQuery(sql);
@@ -69,8 +71,6 @@ public class AccountsController {
         String sql;
 
         try {
-            conn = conectar.getConexion();
-
             sql = "insert into accounts_finance_state(name, type, subtype,finance_state) values(?,?,?,?)";
             ps = conn.prepareStatement(sql);
             ps.setString(1, ac.getName());
@@ -83,14 +83,51 @@ public class AccountsController {
             JOptionPane.showMessageDialog(null, "Error de conexión:" + e.getMessage());
         }
     }
+    
+    //guardar detalles del archivo generado
+    public void saveFileDetails(int file, String empresa, String periodo) {
+        PreparedStatement ps;
+        String sql;
 
+        try {
+            sql = "insert into file_detail(id_file,empresa,periodo) values(?,?,?)";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, file);
+            ps.setString(2, empresa);
+            ps.setString(3, periodo);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error de conexión:" + e.getMessage());
+        }
+    }
+    
+    //obtener detalles del archivo
+    public file_detail getFileDetails(int file) {
+        file_detail details = new file_detail();
+        try {
+            
+            sql = "select * from file_detail where id_file = " + file ;
+            Statement s = conn.createStatement();
+            ResultSet rs = s.executeQuery(sql);
+
+            //rellenado de objeto
+            while (rs.next()) {
+               details = new file_detail(rs.getInt(1),rs.getInt(2), rs.getString(3), rs.getString(4));
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error de conexión:" + e.getMessage());
+        }
+
+        return details;
+    }
+    
     public void addAccountFN(accounts ac) {
         PreparedStatement ps;
         String sql;
 
         //int id_account = 0;
         try {
-            conn = conectar.getConexion();
             /*Statement s = conn.createStatement();
             ResultSet rs = s.executeQuery("select * from accounts_finance_state where name = '"+accountName+"'");
 
@@ -112,7 +149,6 @@ public class AccountsController {
     public ArrayList<accounts> getAccountsFN(String financeState) {
         ArrayList<accounts> accountList = new ArrayList<accounts>();
         try {
-            conn = conectar.getConexion();
             sql = "select * from accounts a inner join accounts_finance_state fs on a.id_finance_state = fs.id_finance_state  where id_file = " + financeState + "";
             Statement s = conn.createStatement();
             ResultSet rs = s.executeQuery(sql);
@@ -132,7 +168,6 @@ public class AccountsController {
     public ArrayList<accountsTableModel> getAccountsTable(int id_file) {
         ArrayList<accountsTableModel> accountList = new ArrayList<accountsTableModel>();
         try {
-            conn = conectar.getConexion();
             sql = "select fs.name,fs.type,a.amount from accounts a inner join accounts_finance_state fs on a.id_finance_state = fs.id_finance_state  where id_file = " + id_file + "";
             Statement s = conn.createStatement();
             ResultSet rs = s.executeQuery(sql);
@@ -152,7 +187,6 @@ public class AccountsController {
     public ArrayList<file> getFiles(int id_user) {
         ArrayList<file> fileList = new ArrayList<file>();
         try {
-            conn = conectar.getConexion();
             sql = "select * from files where id_user = " + id_user + " order by date_file asc";
             Statement s = conn.createStatement();
             ResultSet rs = s.executeQuery(sql);
@@ -174,7 +208,6 @@ public class AccountsController {
         String sql;
 
         try {
-            conn = conectar.getConexion();
 
             sql = "insert into files(name,id_user,date_file) values(?,?,NOW())";
             ps = conn.prepareStatement(sql);
@@ -189,7 +222,6 @@ public class AccountsController {
     public void deleteFile(int fileId) {
          PreparedStatement ps;
         try {
-            conn = conectar.getConexion();
             ps = conn.prepareStatement("DELETE FROM accounts WHERE id_file = ?");
             ps.setInt(1, fileId); 
             ps.executeUpdate();
@@ -206,7 +238,6 @@ public class AccountsController {
     public void deleteAccount(String nameAccount) {
          PreparedStatement ps;
         try {
-            conn = conectar.getConexion();
             ps = conn.prepareStatement("DELETE FROM accounts WHERE name = ?");
             ps.setString(1, nameAccount); 
             ps.executeUpdate();
@@ -219,7 +250,6 @@ public class AccountsController {
     public void viewReportBG(int id_user, String file){
         
         try {
-            conn = conectar.getConexion();
             
             JasperReport reporte = null;
             String path = "src\\view\\report\\reportBG.jasper";

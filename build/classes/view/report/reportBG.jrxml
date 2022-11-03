@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4aee5940-ea9f-4ef8-8743-0299a8a179aa">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="48"/>
 	<subDataset name="Pasivos" uuid="568b0547-ad04-49db-abd2-9c05eddc108f">
 		<parameter name="user" class="java.lang.Integer">
 			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -11,11 +11,25 @@
 			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 		</parameter>
 		<queryString>
-			<![CDATA[select afs.name as pname,a.amount as pamount from accounts a inner join accounts_finance_state afs on a.id_finance_state = afs.id_finance_state inner join files f on f.id_file = a.id_file where f.id_user = $P{user} && f.name =$P{file} && afs.type = 'pasvio']]>
+			<![CDATA[select afs.name as pname ,a.amount pamount from accounts a inner join accounts_finance_state afs on a.id_finance_state = afs.id_finance_state inner join files f on f.id_file = a.id_file where f.id_user = $P{user} && f.name =$P{file} && afs.type = 'pasvio']]>
 		</queryString>
 		<field name="pname" class="java.lang.String"/>
 		<field name="pamount" class="java.lang.Float"/>
 	</subDataset>
+	<subDataset name="dataset1" uuid="b71b02ac-bae3-4c41-b782-08f253934ee2">
+		<parameter name="user" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="file" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[select afs.name as pname ,a.amount pamount from accounts a inner join accounts_finance_state afs on a.id_finance_state = afs.id_finance_state inner join files f on f.id_file = a.id_file where f.id_user = $P{user} && f.name =$P{file} && afs.type = 'pasvio']]>
+		</queryString>
+		<field name="pname" class="java.lang.String"/>
+		<field name="pamount" class="java.lang.Float"/>
+	</subDataset>
+	<subDataset name="dataset2" uuid="e6395acf-8fe3-4a6e-8a23-862f6cd76032"/>
 	<parameter name="user" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -99,7 +113,22 @@
 				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="50"/>
+		<band height="117">
+			<componentElement>
+				<reportElement x="0" y="17" width="555" height="86" uuid="322071db-b729-4e0c-9947-19f7e76df10e"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Pasivos" uuid="36de9d7e-121b-49b3-a791-654dc53382cb">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource(1)]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="86" width="555">
+						<textField>
+							<reportElement x="16" y="30" width="100" height="20" uuid="5aa0d557-2bc5-4195-86f7-2db2178dc6bf"/>
+							<textFieldExpression><![CDATA[$F{pname}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
 		<band height="50"/>
 		<band height="50"/>
 		<band height="50"/>

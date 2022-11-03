@@ -8,22 +8,25 @@ package view;
 import controller.AccountsController;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import model.accountsTableModel;
 import model.file;
+import model.file_detail;
+import view.EF.FrmBG;
 
 /**
  *
  * @author Scarleth
  */
-public class DlgMyFiles extends javax.swing.JDialog {
+public class FrmMyFiles extends javax.swing.JFrame {
 
     private int id_user;
     AccountsController ac = new AccountsController();
     ArrayList<file> fileList;
+
     /**
-     * Creates new form DlgMyFiles
+     * Creates new form FrmMyFiles
      */
-    public DlgMyFiles(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public FrmMyFiles() {
         initComponents();
     }
 
@@ -44,8 +47,7 @@ public class DlgMyFiles extends javax.swing.JDialog {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Mis Archivos");
-        setResizable(false);
+        setTitle("Mis archivos");
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -87,6 +89,11 @@ public class DlgMyFiles extends javax.swing.JDialog {
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/eye.png"))); // NOI18N
         jButton2.setText("Ver");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -121,18 +128,118 @@ public class DlgMyFiles extends javax.swing.JDialog {
                         .addGap(70, 70, 70))))
         );
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        if(JOptionPane.showConfirmDialog(this, "¿Desea eliminar el archivo?") == 0){
-            
-            ac.deleteFile(getIdFIle(fileList.get(obtenerIndiceSeleccionadoEnJTree(TreeFiles)-1).getName()));
+        if (fileSelected(TreeFiles)) {
+            if (TreeFiles.getSelectionCount() < 1) {
+                JOptionPane.showMessageDialog(this, "Porfavor seleccione un archivo");
+            } else {
+                if (JOptionPane.showConfirmDialog(this, "¿Desea eliminar el archivo?") == 0) {
+
+                    ac.deleteFile(getIdFIle(fileList.get(obtenerIndiceSeleccionadoEnJTree(TreeFiles) - 1).getName()));
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Porfavor seleccione un archivo");
         }
-        
+
+
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (fileSelected(TreeFiles)) {
+            if (TreeFiles.getSelectionCount() < 1) {
+                JOptionPane.showMessageDialog(this, "Porfavor seleccione un archivo");
+            } else {
+                int id_file = getIdFIle(fileList.get(obtenerIndiceSeleccionadoEnJTree(TreeFiles) - 1).getName());
+                //lista de cuentas en el balance
+                ArrayList<accountsTableModel> cuentas = ac.getAccountsTable(id_file);
+                file_detail details = ac.getFileDetails(id_file);
+                //Lista de activos
+                ArrayList<accountsTableModel> activos = new ArrayList<accountsTableModel>();
+                //Lista de pasivos
+                ArrayList<accountsTableModel> pasivos = new ArrayList<accountsTableModel>();
+                //Lista de capital
+                ArrayList<accountsTableModel> capital = new ArrayList<accountsTableModel>();
+                //Total activos
+                float totact = 0;
+                //Total pasivos
+                float totpas = 0;
+                //Total Capital
+                float totcap = 0;
+                //Balance
+                String balance;
+                //activos + pasivos
+                float actpas = 0;
+
+                for (int i = 0; i < cuentas.size(); i++) {
+                    if (cuentas.get(i).getTipo().equals("activo")) {
+                        activos.add(cuentas.get(i));
+                        totact += Float.parseFloat(cuentas.get(i).Monto);
+                    } else if (cuentas.get(i).getTipo().equals("pasivo")) {
+                        pasivos.add(cuentas.get(i));
+                        totpas += Float.parseFloat(cuentas.get(i).Monto);
+                    } else if (cuentas.get(i).getTipo().equals("capital")) {
+                        capital.add(cuentas.get(i));
+                        totcap += Float.parseFloat(cuentas.get(i).Monto);
+                    }
+                }
+
+                //suma de capital+ pasivos
+                actpas = totcap + totpas;
+
+                //cade de texto de balance
+                balance = totact+ " = " +actpas ;
+
+                //Mostramos el balance
+                FrmBG bgGenerated = new FrmBG();
+                bgGenerated.setLocationRelativeTo(this);
+                bgGenerated.setVisible(true);
+                bgGenerated.setData(activos, pasivos, capital, details.getEmpresa(), details.getPeriodo(), balance, totact + "", totpas + "", totcap + "");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Porfavor seleccione un archivo");
+        }
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private boolean fileSelected(javax.swing.JTree arbol) {
+        // JTree auxiliar
+        javax.swing.JTree aux = new javax.swing.JTree(arbol.getModel());
+        // expande los nodos del JTree auxiliar para luego obtener el numero de fila correctamente
+        for (int i = 0; i < aux.getRowCount(); i++) {
+            aux.expandRow(i);
+        }
+
+        if ((aux.getRowForPath(arbol.getSelectionPath()) - 1) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     private int obtenerIndiceSeleccionadoEnJTree(javax.swing.JTree arbol) {
         // JTree auxiliar
@@ -200,27 +307,20 @@ public class DlgMyFiles extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DlgMyFiles.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmMyFiles.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DlgMyFiles.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmMyFiles.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DlgMyFiles.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmMyFiles.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DlgMyFiles.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmMyFiles.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-        /* Create and display the dialog */
+        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                DlgMyFiles dialog = new DlgMyFiles(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
+                new FrmMyFiles().setVisible(true);
             }
         });
     }

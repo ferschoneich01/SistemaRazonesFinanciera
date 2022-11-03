@@ -10,7 +10,9 @@ import controller.AccountsController;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import model.accounts;
+import model.accountsTableModel;
 import model.accounts_finance_state;
+import view.EF.FrmBG;
 
 /**
  *
@@ -24,13 +26,14 @@ public class PnlBG extends javax.swing.JPanel {
     ArrayList<accounts> listaAccounts = new ArrayList<accounts>();
     public int id_user;
     public String file_name;
+    public int id_file;
     //variable que indica si el archivo esta guardado
     public boolean guardado = false;
 
     /**
      * Creates new form PnlBG
      */
-    public PnlBG(int id_user, String file_name) {
+    public PnlBG(int id_user, String file_name, int id_file) {
         initComponents();
         for (int i = 0; i < ac.getAccounts("BG").size(); i++) {
             cbxCuentas.addItem(lista.get(i).getName());
@@ -38,6 +41,7 @@ public class PnlBG extends javax.swing.JPanel {
         this.id_user = id_user;
         this.file_name = file_name;
         lblFileName.setText(file_name);
+        this.id_file = id_file;
     }
 
     /**
@@ -52,7 +56,7 @@ public class PnlBG extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         pnlContentControlss = new javax.swing.JPanel();
         cbxCuentas = new javax.swing.JComboBox<>();
-        txtFechaInicio = new javax.swing.JTextField();
+        txtPeriodo = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -62,9 +66,6 @@ public class PnlBG extends javax.swing.JPanel {
         btnAgregarCuenta = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         txtNombreEmpresa = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        txtFechaFin = new javax.swing.JTextField();
         btnEliminarCuenta = new javax.swing.JButton();
         txtAmount = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
@@ -91,17 +92,17 @@ public class PnlBG extends javax.swing.JPanel {
         cbxCuentas.setToolTipText("");
         cbxCuentas.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(255, 255, 255), new java.awt.Color(0, 0, 0), new java.awt.Color(102, 102, 102)));
 
-        txtFechaInicio.setBackground(new java.awt.Color(0, 0, 0));
-        txtFechaInicio.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        txtFechaInicio.setForeground(new java.awt.Color(204, 204, 204));
-        txtFechaInicio.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtFechaInicio.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
+        txtPeriodo.setBackground(new java.awt.Color(0, 0, 0));
+        txtPeriodo.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        txtPeriodo.setForeground(new java.awt.Color(204, 204, 204));
+        txtPeriodo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtPeriodo.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Seleccionar Cuenta:");
 
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Periodo: dia / mes / año");
+        jLabel3.setText("Periodo: ");
 
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Agregar cuenta a la lista:");
@@ -144,20 +145,6 @@ public class PnlBG extends javax.swing.JPanel {
         txtNombreEmpresa.setForeground(new java.awt.Color(204, 204, 204));
         txtNombreEmpresa.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtNombreEmpresa.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
-
-        jLabel6.setFont(new java.awt.Font("Dialog", 2, 12)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Inicio:");
-
-        jLabel7.setFont(new java.awt.Font("Dialog", 2, 12)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Fin:");
-
-        txtFechaFin.setBackground(new java.awt.Color(0, 0, 0));
-        txtFechaFin.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        txtFechaFin.setForeground(new java.awt.Color(204, 204, 204));
-        txtFechaFin.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtFechaFin.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
 
         btnEliminarCuenta.setBackground(new java.awt.Color(204, 0, 0));
         btnEliminarCuenta.setForeground(new java.awt.Color(255, 255, 255));
@@ -212,45 +199,32 @@ public class PnlBG extends javax.swing.JPanel {
                     .addGroup(pnlContentControlssLayout.createSequentialGroup()
                         .addGroup(pnlContentControlssLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlContentControlssLayout.createSequentialGroup()
-                                .addGap(282, 282, 282)
-                                .addComponent(jLabel3))
-                            .addGroup(pnlContentControlssLayout.createSequentialGroup()
                                 .addGroup(pnlContentControlssLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtNombreEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel5))
                                 .addGap(18, 18, 18)
                                 .addGroup(pnlContentControlssLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(9, 9, 9)
-                                .addGroup(pnlContentControlssLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel7)
-                                    .addComponent(txtFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jLabel3)
+                                    .addComponent(txtPeriodo)))
                             .addComponent(jLabel4))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(149, 149, 149))))
         );
         pnlContentControlssLayout.setVerticalGroup(
             pnlContentControlssLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlContentControlssLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(pnlContentControlssLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlContentControlssLayout.createSequentialGroup()
-                        .addGap(0, 5, Short.MAX_VALUE)
+                        .addGap(0, 27, Short.MAX_VALUE)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtNombreEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel4))
                     .addGroup(pnlContentControlssLayout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addGroup(pnlContentControlssLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel6))
+                        .addGap(26, 26, 26)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlContentControlssLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(txtPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlContentControlssLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlContentControlssLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -315,14 +289,12 @@ public class PnlBG extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblFileName)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addGap(250, 250, 250))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(pnlContentControlss, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(spContentTable))
-                        .addContainerGap(42, Short.MAX_VALUE))))
+                        .addGap(141, 141, 141)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(pnlContentControlss, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(spContentTable)))
+                .addContainerGap(42, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -383,37 +355,93 @@ public class PnlBG extends javax.swing.JPanel {
 
         if (!txtAmount.getText().isEmpty()) {
             float amount;
-            try{
+            try {
                 amount = Float.parseFloat(txtAmount.getText());
                 acs.setId_finance_state(id_fs);
                 acs.setId_file(getIdFIle("BG_"));
                 acs.setAmount(Float.parseFloat(txtAmount.getText()));
                 ac.addAccountFN(acs);
                 updateTable();
-            }catch(NumberFormatException ex){
+            } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Porfavor ingresa solamente números");
             }
 
-        }else{
+        } else {
             JOptionPane.showMessageDialog(this, "Porfavor ingresa un monto para la cuenta seleccionada");
         }
 
     }//GEN-LAST:event_btnGuardarcuentaActionPerformed
 
     private void btnEliminarCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarCuentaActionPerformed
-        
-        if(Tabla.getSelectedRowCount() > 0){
-             ac.deleteAccount(ac.getAccountsTable(getIdFIle("BG_")).get(Tabla.getSelectedRow()).getCuenta());
-        }else{
+
+        if (Tabla.getSelectedRowCount() > 0) {
+            ac.deleteAccount(ac.getAccountsTable(getIdFIle("BG_")).get(Tabla.getSelectedRow()).getCuenta());
+        } else {
             JOptionPane.showMessageDialog(this, "Debe seleccionar una cuenta para eliminar");
         }
-       
-        
+
+
     }//GEN-LAST:event_btnEliminarCuentaActionPerformed
 
     private void btnGenerarBalanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarBalanceActionPerformed
-        guardado = true;
-        ac.viewReportBG(id_user,"BG_"+file_name);
+        if (!txtNombreEmpresa.getText().equals("")) {
+            if (!txtPeriodo.getText().equals("")) {
+                //Guardamos detalles del archivo
+                ac.saveFileDetails(id_file, txtNombreEmpresa.getText(), txtPeriodo.getText());
+                guardado = true;
+                /*ac.viewReportBG(id_user,"BG_"+file_name);*/
+                //lista de cuentas en el balance
+                ArrayList<accountsTableModel> cuentas = ac.getAccountsTable(id_file);
+
+                //Lista de activos 
+                ArrayList<accountsTableModel> activos = new ArrayList<accountsTableModel>();
+                //Lista de pasivos
+                ArrayList<accountsTableModel> pasivos = new ArrayList<accountsTableModel>();
+                //Lista de capital
+                ArrayList<accountsTableModel> capital = new ArrayList<accountsTableModel>();
+                //Total activos 
+                float totact = 0;
+                //Total pasivos
+                float totpas = 0;
+                //Total Capital
+                float totcap = 0;
+                //Balance
+                String balance;
+                //activos + pasivos 
+                float actpas = 0;
+
+                for (int i = 0; i < cuentas.size(); i++) {
+                    if (cuentas.get(i).getTipo().equals("activo")) {
+                        activos.add(cuentas.get(i));
+                        totact += Float.parseFloat(cuentas.get(i).Monto);
+                    } else if (cuentas.get(i).getTipo().equals("pasivo")) {
+                        pasivos.add(cuentas.get(i));
+                        totpas += Float.parseFloat(cuentas.get(i).Monto);
+                    } else if (cuentas.get(i).getTipo().equals("capital")) {
+                        capital.add(cuentas.get(i));
+                        totcap += Float.parseFloat(cuentas.get(i).Monto);
+                    }
+                }
+
+               //suma de capital+ pasivos
+                actpas = totcap + totpas;
+
+                //cade de texto de balance
+                balance = totact+ " = " +actpas ;
+
+                //Mostramos el balance
+                FrmBG bgGenerated = new FrmBG();
+                bgGenerated.setLocationRelativeTo(this);
+                bgGenerated.setVisible(true);
+                bgGenerated.setData(activos, pasivos, capital, txtNombreEmpresa.getText(), txtPeriodo.getText(), balance, totact + "", totpas + "", totcap + "");
+            }else{
+                JOptionPane.showMessageDialog(this,"Porfavor Ingrese el periodo del balance");
+            }
+        }else{
+            JOptionPane.showMessageDialog(this,"Porfavor Ingrese el nombre de la empresa");
+        }
+
+
     }//GEN-LAST:event_btnGenerarBalanceActionPerformed
 
     public void updateTable() {
@@ -456,8 +484,6 @@ public class PnlBG extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     public javax.swing.JLabel lblFileName;
@@ -465,8 +491,7 @@ public class PnlBG extends javax.swing.JPanel {
     private javax.swing.JScrollPane spContentTable;
     private javax.swing.JTextField txtAgregarCuenta;
     private javax.swing.JTextField txtAmount;
-    private javax.swing.JTextField txtFechaFin;
-    private javax.swing.JTextField txtFechaInicio;
     private javax.swing.JTextField txtNombreEmpresa;
+    private javax.swing.JTextField txtPeriodo;
     // End of variables declaration//GEN-END:variables
 }
