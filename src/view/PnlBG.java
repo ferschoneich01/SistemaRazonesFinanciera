@@ -387,9 +387,8 @@ public class PnlBG extends javax.swing.JPanel {
         if (!txtNombreEmpresa.getText().equals("")) {
             if (!txtPeriodo.getText().equals("")) {
                 //Guardamos detalles del archivo
-                ac.saveFileDetails(id_file, txtNombreEmpresa.getText(), txtPeriodo.getText());
+                ac.saveFileDetails(id_file, txtNombreEmpresa.getText(), txtPeriodo.getText(),"","");
                 guardado = true;
-                /*ac.viewReportBG(id_user,"BG_"+file_name);*/
                 //lista de cuentas en el balance
                 ArrayList<accountsTableModel> cuentas = ac.getAccountsTable(id_file);
 

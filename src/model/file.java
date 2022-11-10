@@ -25,8 +25,6 @@ public class file {
         this.date_file = date_file;
     }
 
-    
-
     public int getId_file() {
         return id_file;
     }
@@ -58,8 +56,7 @@ public class file {
     public void setDate_file(String date_file) {
         this.date_file = date_file;
     }
-    
-    
-    
+
+
     
 }

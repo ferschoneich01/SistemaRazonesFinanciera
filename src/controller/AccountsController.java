@@ -85,7 +85,7 @@ public class AccountsController {
     }
     
     //guardar detalles del archivo generado
-    public void saveFileDetails(int file, String empresa, String periodo) {
+    public void saveFileDetails(int file, String empresa, String periodo, String dividendos, String ir) {
         PreparedStatement ps;
         String sql;
 
@@ -95,6 +95,8 @@ public class AccountsController {
             ps.setInt(1, file);
             ps.setString(2, empresa);
             ps.setString(3, periodo);
+            ps.setFloat(4, Float.parseFloat(dividendos));
+            ps.setInt(5, Integer.parseInt(ir));
             ps.executeUpdate();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error de conexión:" + e.getMessage());
@@ -112,7 +114,7 @@ public class AccountsController {
 
             //rellenado de objeto
             while (rs.next()) {
-               details = new file_detail(rs.getInt(1),rs.getInt(2), rs.getString(3), rs.getString(4));
+               details = new file_detail(rs.getInt(1),rs.getInt(2), rs.getString(3), rs.getString(4),rs.getFloat(5),rs.getInt(6));
             }
 
         } catch (SQLException e) {

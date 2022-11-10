@@ -12,6 +12,7 @@ import model.accountsTableModel;
 import model.file;
 import model.file_detail;
 import view.EF.FrmBG;
+import view.EF.FrmER;
 
 /**
  *
@@ -174,51 +175,152 @@ public class FrmMyFiles extends javax.swing.JFrame {
             if (TreeFiles.getSelectionCount() < 1) {
                 JOptionPane.showMessageDialog(this, "Porfavor seleccione un archivo");
             } else {
-                int id_file = getIdFIle(fileList.get(obtenerIndiceSeleccionadoEnJTree(TreeFiles) - 1).getName());
-                //lista de cuentas en el balance
-                ArrayList<accountsTableModel> cuentas = ac.getAccountsTable(id_file);
-                file_detail details = ac.getFileDetails(id_file);
-                //Lista de activos
-                ArrayList<accountsTableModel> activos = new ArrayList<accountsTableModel>();
-                //Lista de pasivos
-                ArrayList<accountsTableModel> pasivos = new ArrayList<accountsTableModel>();
-                //Lista de capital
-                ArrayList<accountsTableModel> capital = new ArrayList<accountsTableModel>();
-                //Total activos
-                float totact = 0;
-                //Total pasivos
-                float totpas = 0;
-                //Total Capital
-                float totcap = 0;
-                //Balance
-                String balance;
-                //activos + pasivos
-                float actpas = 0;
 
-                for (int i = 0; i < cuentas.size(); i++) {
-                    if (cuentas.get(i).getTipo().equals("activo")) {
-                        activos.add(cuentas.get(i));
-                        totact += Float.parseFloat(cuentas.get(i).Monto);
-                    } else if (cuentas.get(i).getTipo().equals("pasivo")) {
-                        pasivos.add(cuentas.get(i));
-                        totpas += Float.parseFloat(cuentas.get(i).Monto);
-                    } else if (cuentas.get(i).getTipo().equals("capital")) {
-                        capital.add(cuentas.get(i));
-                        totcap += Float.parseFloat(cuentas.get(i).Monto);
+                String fileName = fileList.get(obtenerIndiceSeleccionadoEnJTree(TreeFiles) - 1).getName();
+                char[] cadena = fileName.toCharArray();
+                int id_file = getIdFIle(fileList.get(obtenerIndiceSeleccionadoEnJTree(TreeFiles) - 1).getName());
+                if (cadena[0] == 'E' && cadena[1] == 'R') {
+                    //lista de cuentas en el balance
+                    ArrayList<accountsTableModel> cuentas = ac.getAccountsTable(id_file);
+                    file_detail details = ac.getFileDetails(id_file);
+                    //Lista de ingresos
+                    ArrayList<accountsTableModel> ingresos = new ArrayList<accountsTableModel>();
+                    //Lista de costos
+                    ArrayList<accountsTableModel> costos = new ArrayList<accountsTableModel>();
+                    //Lista de gastos
+                    ArrayList<accountsTableModel> gastos = new ArrayList<accountsTableModel>();
+                    //Lista de ingresos y gastos no operativos
+                    ArrayList<accountsTableModel> ing_gas_no_ope = new ArrayList<accountsTableModel>();
+                    //Lista de descuentos y devoluciones
+                    ArrayList<accountsTableModel> desdev = new ArrayList<accountsTableModel>();
+
+                    //Total ingresos
+                    float totingresos = 0;
+                    //Total descuentos y devoluciones
+                    float desdevtot = 0;
+                    //Total costos
+                    float totcostos = 0;
+                    //Total gastos
+                    float totgastos = 0;
+                    //Ingresos no operacionales
+                    float totingnoope = 0;
+                    //Gastos no operacionales
+                    float totgasnoope = 0;
+                    
+                    for (int i = 0; i < cuentas.size(); i++) {
+                        System.out.printf(cuentas.get(i).getTipo());
+                        switch (cuentas.get(i).getTipo()) {
+                            case "Ingresos":
+                                ingresos.add(cuentas.get(i));
+                                totingresos += Float.parseFloat(cuentas.get(i).Monto);
+                                break;
+                            case "Costos":
+                                costos.add(cuentas.get(i));
+                                totcostos += Float.parseFloat(cuentas.get(i).Monto);
+                                break;
+                            case "Gastos":
+                                gastos.add(cuentas.get(i));
+                                totgastos += Float.parseFloat(cuentas.get(i).Monto);
+                                break;
+                            case "Ingresos No Operacionales":
+                                ing_gas_no_ope.add(cuentas.get(i));
+                                totingnoope += Float.parseFloat(cuentas.get(i).Monto);
+                                break;
+                            case "Gastos No Operacionales":
+                                ing_gas_no_ope.add(cuentas.get(i));
+                                totgasnoope += Float.parseFloat(cuentas.get(i).Monto);
+                                break;
+                            case "Descuentos":
+                            case "Devolciones":
+                                desdev.add(cuentas.get(i));
+                                desdevtot += Float.parseFloat(cuentas.get(i).Monto);
+                                break;
+                            default:
+                                break;
+                        }
+
                     }
+                    totingresos -= desdevtot;
+                    //utilidad bruta
+                    float utilidadB = totingresos - totcostos;
+                    //utilidad de operación
+                    float utilidadOP = utilidadB - totgastos;
+                    //Utilidad antes de impuestos
+                    float utilidadantimp = utilidadOP + totingnoope - totgasnoope;
+                    //Impuestos IR 30%
+                    float  porcentaje = Float.parseFloat(details.getIr()+"") / 100;
+                    float impuestos = utilidadantimp * porcentaje;
+                    //Utilidad neta
+                    float utilidadneta = utilidadantimp - impuestos;
+                    //Utilidad retenida
+                    float utilidadretenida = 0.0f;
+                    if (!(details.getDividendos()+"").isEmpty()) {
+                        try {
+                            utilidadretenida = utilidadneta - Float.parseFloat(details.getDividendos()+"");
+                        } catch (NumberFormatException ex) {
+                            utilidadretenida = 0.0f;
+                        }
+
+                    }
+                    
+                    //Mostramos el estado de resultado
+                    FrmER erGenerated = new FrmER();
+                    erGenerated.setLocationRelativeTo(this);
+                    erGenerated.setVisible(true);
+                    erGenerated.setData(ingresos, costos, gastos, desdev, ing_gas_no_ope, details.getEmpresa(), details.getPeriodo(), totingresos, totcostos, totgastos, utilidadB, utilidadOP, utilidadantimp, impuestos, utilidadneta, utilidadretenida, details.getDividendos()+"");
+
+                } else if (cadena[0] == 'B' && cadena[1] == 'G') {
+
+                    //lista de cuentas en el balance
+                    ArrayList<accountsTableModel> cuentas = ac.getAccountsTable(id_file);
+                    file_detail details = ac.getFileDetails(id_file);
+                    //Lista de activos
+                    ArrayList<accountsTableModel> activos = new ArrayList<accountsTableModel>();
+                    //Lista de pasivos
+                    ArrayList<accountsTableModel> pasivos = new ArrayList<accountsTableModel>();
+                    //Lista de capital
+                    ArrayList<accountsTableModel> capital = new ArrayList<accountsTableModel>();
+                    //Total activos
+                    float totact = 0;
+                    //Total pasivos
+                    float totpas = 0;
+                    //Total Capital
+                    float totcap = 0;
+                    //Balance
+                    String balance;
+                    //activos + pasivos
+                    float actpas = 0;
+
+                    for (int i = 0; i < cuentas.size(); i++) {
+                        if (cuentas.get(i).getTipo().equals("activo")) {
+                            activos.add(cuentas.get(i));
+                            totact += Float.parseFloat(cuentas.get(i).Monto);
+                        } else if (cuentas.get(i).getTipo().equals("pasivo")) {
+                            pasivos.add(cuentas.get(i));
+                            totpas += Float.parseFloat(cuentas.get(i).Monto);
+                        } else if (cuentas.get(i).getTipo().equals("capital")) {
+                            capital.add(cuentas.get(i));
+                            totcap += Float.parseFloat(cuentas.get(i).Monto);
+                        }
+                    }
+
+                    //suma de capital+ pasivos
+                    actpas = totcap + totpas;
+
+                    //cade de texto de balance
+                    balance = totact + " = " + actpas;
+
+                    //Mostramos el balance
+                    FrmBG bgGenerated = new FrmBG();
+                    bgGenerated.setLocationRelativeTo(this);
+                    bgGenerated.setVisible(true);
+                    bgGenerated.setData(activos, pasivos, capital, details.getEmpresa(), details.getPeriodo(), balance, totact + "", totpas + "", totcap + "");
+
+                }
+                if (cadena[0] == 'R' && cadena[1] == 'F') {
+
                 }
 
-                //suma de capital+ pasivos
-                actpas = totcap + totpas;
-
-                //cade de texto de balance
-                balance = totact+ " = " +actpas ;
-
-                //Mostramos el balance
-                FrmBG bgGenerated = new FrmBG();
-                bgGenerated.setLocationRelativeTo(this);
-                bgGenerated.setVisible(true);
-                bgGenerated.setData(activos, pasivos, capital, details.getEmpresa(), details.getPeriodo(), balance, totact + "", totpas + "", totcap + "");
             }
         } else {
             JOptionPane.showMessageDialog(this, "Porfavor seleccione un archivo");

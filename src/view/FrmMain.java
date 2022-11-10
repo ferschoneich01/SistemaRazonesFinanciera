@@ -8,6 +8,7 @@ package view;
 import controller.AccountsController;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -167,7 +168,7 @@ public class FrmMain extends javax.swing.JFrame {
         if (ComprobationPages("Balance General") == false) {
             JOptionPane.showMessageDialog(this, "Ya tienes abierta una pestaña.");
         } else {
-            bg = new PnlBG(id_user, file,getIdFIle("BG_"+file));
+            bg = new PnlBG(id_user, file, getIdFIle("BG_" + file));      
             tpContent.add("Balance General", bg);
             btnClosePage.setEnabled(true);
         }
@@ -176,7 +177,16 @@ public class FrmMain extends javax.swing.JFrame {
 
 
     private void btnClosePageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClosePageMouseClicked
-        if (bg.guardado == false) {
+        boolean aux = false;
+        if(tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Balance General")){
+            aux = true;
+        }else if(tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Estado de Resultado")){
+             aux = true;
+        }else if(tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Razones Financieras")){
+             aux = true;
+        }
+        
+        if (aux) {
             if (tpContent.getComponentCount() == 1) {
                 if (JOptionPane.showConfirmDialog(this, "¿Desea cerrar la pestaña?") == 0) {
                     //No se guardaran los datos
@@ -184,7 +194,7 @@ public class FrmMain extends javax.swing.JFrame {
                     if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Balance General")) {
                         ac.deleteFile(getIdFIle("BG_" + bg.lblFileName.getText()));
                     } else if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Estado de resultado")) {
-                        ac.deleteFile(getIdFIle("ER_"));
+                        ac.deleteFile(getIdFIle("ER_"+ er.lblFileName.getText()));
                     } else if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Razones FInancieras")) {
                         ac.deleteFile(getIdFIle("RF_"));
                     }
@@ -197,7 +207,7 @@ public class FrmMain extends javax.swing.JFrame {
                     if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Balance General")) {
                         ac.deleteFile(getIdFIle("BG_" + bg.lblFileName.getText()));
                     } else if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Estado de resultado")) {
-                        ac.deleteFile(getIdFIle("ER_"));
+                        ac.deleteFile(getIdFIle("ER_"+er.lblFileName.getText()));
                     } else if (tpContent.getTitleAt(tpContent.getSelectedIndex()).equals("Razones FInancieras")) {
                         ac.deleteFile(getIdFIle("RF_"));
                     }
@@ -205,11 +215,11 @@ public class FrmMain extends javax.swing.JFrame {
 
                 }
             }
-        }else{
+        } else {
             if (tpContent.getComponentCount() == 1) {
                 if (JOptionPane.showConfirmDialog(this, "¿Desea cerrar la pestaña?") == 0) {
                     //No se guardaran los datos
-                    tpContent.remove(tpContent.getSelectedIndex());                   
+                    tpContent.remove(tpContent.getSelectedIndex());
                     btnClosePage.setEnabled(false);
                 }
 
@@ -218,7 +228,7 @@ public class FrmMain extends javax.swing.JFrame {
                     tpContent.remove(tpContent.getSelectedIndex());
                 }
             }
-        } 
+        }
 
     }//GEN-LAST:event_btnClosePageMouseClicked
 
@@ -227,7 +237,7 @@ public class FrmMain extends javax.swing.JFrame {
         if (ComprobationPages("Estado de resultado") == false) {
             JOptionPane.showMessageDialog(this, "Ya tienes abierta una pestaña.");
         } else {
-            er = new PnlER();
+            er = new PnlER(id_user, file, getIdFIle("ER_" + file));
             tpContent.add("Estado de resultado", er);
             btnClosePage.setEnabled(true);
         }
@@ -280,15 +290,27 @@ public class FrmMain extends javax.swing.JFrame {
 
     private void CreateFile(String FinanceState, String AvFN) {
         boolean flag = true;
+        boolean existFile = false;
         while (flag) {
             file = JOptionPane.showInputDialog("Nombre del archivo de " + FinanceState + ":");
+
             if (file.isEmpty()) {
                 //El archivo no tiene nombre
                 flag = true;
             } else {
                 //El archivo tiene nombre
-                flag = false;
-                ac.CreateFile(file, id_user, AvFN);
+                for (int i = 0; i < ac.getFiles(id_user).size(); i++) {
+                    if (ac.getFiles(id_user).get(i).getName().equals(AvFN + file)) {
+                        existFile = true;
+                    }
+                }
+                if (existFile == false) {
+                    flag = false;
+                    ac.CreateFile(file, id_user, AvFN);
+                }else{
+                    JOptionPane.showMessageDialog(this, "Ya existe un archivo con este nombre en tu cuenta");
+                }
+
             }
         }
 
