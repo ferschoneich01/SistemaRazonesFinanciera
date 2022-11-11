@@ -65,8 +65,8 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="157" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="lblEmpresa" alignment="1" max="32767" attributes="0"/>
-                          <Component id="jLabel2" alignment="1" pref="390" max="32767" attributes="0"/>
+                          <Component id="BG" alignment="1" max="32767" attributes="0"/>
+                          <Component id="lblEmpresa" alignment="1" pref="390" max="32767" attributes="0"/>
                           <Component id="lblPeriodo" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
@@ -113,9 +113,9 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel2" min="-2" pref="39" max="-2" attributes="0"/>
+                      <Component id="lblEmpresa" min="-2" pref="39" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblEmpresa" min="-2" pref="45" max="-2" attributes="0"/>
+                      <Component id="BG" min="-2" pref="45" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblPeriodo" min="-2" pref="45" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
@@ -267,7 +267,7 @@
                 <Property name="text" type="java.lang.String" value="00000"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblEmpresa">
+            <Component class="javax.swing.JLabel" name="BG">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Dialog" size="18" style="1"/>
@@ -276,13 +276,13 @@
                   <Color blue="0" green="0" red="0" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="EMPRESA"/>
+                <Property name="text" type="java.lang.String" value="BALANCE GENERAL"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel2">
+            <Component class="javax.swing.JLabel" name="lblEmpresa">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Dialog" size="36" style="1"/>
+                  <Font name="Dialog" size="24" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="0" green="0" red="0" type="rgb"/>

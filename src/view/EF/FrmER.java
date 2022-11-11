@@ -102,7 +102,7 @@ public class FrmER extends javax.swing.JFrame {
 
         }
 
-        ef.setText(Empresa);
+        lblEmpresa.setText(Empresa);
         lblPeriodo.setText(Periodo);
 
         lblTotIng.setText(totingresos + "");

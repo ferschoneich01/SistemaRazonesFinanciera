@@ -13,6 +13,7 @@ public class accounts_finance_state {
     public int id_finance_state;
     public String name;
     public String type;
+    public String subType;
     
     public accounts_finance_state(){
         
@@ -48,6 +49,14 @@ public class accounts_finance_state {
 
     public void setType(String type) {
         this.type = type;
+    }
+    
+    public String getSubType() {
+        return subType;
+    }
+
+    public void setSubType(String subtype) {
+        this.subType = subtype;
     }
 
     

@@ -64,7 +64,7 @@ public class FrmBG extends javax.swing.JFrame {
             }
         ));
         
-        lblEmpresa.setText(Empresa);
+        BG.setText(Empresa);
         lblPeriodo.setText(Periodo);
         lblBalance.setText(Balance);
         lblTotActivos.setText(TotAct);
@@ -90,8 +90,8 @@ public class FrmBG extends javax.swing.JFrame {
         TblPasivos = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
         lblTotPasivos = new javax.swing.JLabel();
+        BG = new javax.swing.JLabel();
         lblEmpresa = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         lblPeriodo = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         TblCapital = new javax.swing.JTable();
@@ -158,15 +158,15 @@ public class FrmBG extends javax.swing.JFrame {
         lblTotPasivos.setForeground(new java.awt.Color(0, 0, 0));
         lblTotPasivos.setText("00000");
 
-        lblEmpresa.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        BG.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        BG.setForeground(new java.awt.Color(0, 0, 0));
+        BG.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        BG.setText("BALANCE GENERAL");
+
+        lblEmpresa.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         lblEmpresa.setForeground(new java.awt.Color(0, 0, 0));
         lblEmpresa.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblEmpresa.setText("EMPRESA");
-
-        jLabel2.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("BALANCE GENERAL");
+        lblEmpresa.setText("BALANCE GENERAL");
 
         lblPeriodo.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         lblPeriodo.setForeground(new java.awt.Color(0, 0, 0));
@@ -212,8 +212,8 @@ public class FrmBG extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(157, 157, 157)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(lblEmpresa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                    .addComponent(BG, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblEmpresa, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
                     .addComponent(lblPeriodo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -248,9 +248,9 @@ public class FrmBG extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(BG, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16)
@@ -321,11 +321,11 @@ public class FrmBG extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel BG;
     private javax.swing.JTable TblActivos;
     private javax.swing.JTable TblCapital;
     private javax.swing.JTable TblPasivos;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;

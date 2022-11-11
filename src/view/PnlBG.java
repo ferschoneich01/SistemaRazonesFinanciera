@@ -69,6 +69,7 @@ public class PnlBG extends javax.swing.JPanel {
         btnEliminarCuenta = new javax.swing.JButton();
         txtAmount = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
+        cbxSubTipoCuentas = new javax.swing.JComboBox<>();
         spContentTable = new javax.swing.JScrollPane();
         Tabla = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
@@ -165,6 +166,10 @@ public class PnlBG extends javax.swing.JPanel {
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Monto C$:");
 
+        cbxSubTipoCuentas.setBackground(new java.awt.Color(0, 0, 0));
+        cbxSubTipoCuentas.setForeground(new java.awt.Color(255, 255, 255));
+        cbxSubTipoCuentas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Circulante", "No Circulante", "" }));
+
         javax.swing.GroupLayout pnlContentControlssLayout = new javax.swing.GroupLayout(pnlContentControlss);
         pnlContentControlss.setLayout(pnlContentControlssLayout);
         pnlContentControlssLayout.setHorizontalGroup(
@@ -191,11 +196,12 @@ public class PnlBG extends javax.swing.JPanel {
                             .addGroup(pnlContentControlssLayout.createSequentialGroup()
                                 .addComponent(btnGuardarcuenta)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnEliminarCuenta)
-                                .addGap(43, 43, 43))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContentControlssLayout.createSequentialGroup()
-                                .addComponent(btnAgregarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(149, 149, 149))))
+                                .addComponent(btnEliminarCuenta))
+                            .addGroup(pnlContentControlssLayout.createSequentialGroup()
+                                .addComponent(cbxSubTipoCuentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnAgregarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(43, 43, 43))
                     .addGroup(pnlContentControlssLayout.createSequentialGroup()
                         .addGroup(pnlContentControlssLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlContentControlssLayout.createSequentialGroup()
@@ -226,11 +232,11 @@ public class PnlBG extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlContentControlssLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlContentControlssLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cbxTipoCuentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnAgregarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtAgregarCuenta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(pnlContentControlssLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbxTipoCuentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAgregarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxSubTipoCuentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtAgregarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(pnlContentControlssLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -294,7 +300,7 @@ public class PnlBG extends javax.swing.JPanel {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(pnlContentControlss, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(spContentTable)))
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -331,6 +337,7 @@ public class PnlBG extends javax.swing.JPanel {
             accounts_finance_state afs = new accounts_finance_state();
             afs.setName(txtAgregarCuenta.getText());
             afs.setType(cbxTipoCuentas.getSelectedItem() + "");
+            afs.setSubType(cbxSubTipoCuentas.getSelectedItem() + "");
             ac.addAccount(afs, "BG");
             cbxCuentas.removeAllItems();
             lista = ac.getAccounts("BG");
@@ -477,6 +484,7 @@ public class PnlBG extends javax.swing.JPanel {
     private javax.swing.JButton btnGenerarBalance;
     private javax.swing.JButton btnGuardarcuenta;
     private javax.swing.JComboBox<String> cbxCuentas;
+    private javax.swing.JComboBox<String> cbxSubTipoCuentas;
     private javax.swing.JComboBox<String> cbxTipoCuentas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

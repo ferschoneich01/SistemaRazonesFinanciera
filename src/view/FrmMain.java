@@ -248,7 +248,7 @@ public class FrmMain extends javax.swing.JFrame {
         if (ComprobationPages("Razones Financieras") == false) {
             JOptionPane.showMessageDialog(this, "Ya tienes abierta una pestaña.");
         } else {
-            rf = new PnlRF();
+            rf = new PnlRF(id_user, file, getIdFIle("RF_" + file));
             tpContent.add("Razones Financieras", rf);
             btnClosePage.setEnabled(true);
         }

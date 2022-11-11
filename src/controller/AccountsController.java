@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import model.accounts;
+import model.accountsRFmodel;
 import model.accountsTableModel;
 import model.accounts_finance_state;
 import model.file;
@@ -75,7 +76,7 @@ public class AccountsController {
             ps = conn.prepareStatement(sql);
             ps.setString(1, ac.getName());
             ps.setString(2, ac.getType());
-            ps.setString(3, "");
+            ps.setString(3, ac.getSubType());
             ps.setString(4, fs);
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "Nueva cuenta guardada :)");
@@ -177,6 +178,25 @@ public class AccountsController {
             //rellenado de objeto
             while (rs.next()) {
                 accountList.add(new accountsTableModel(rs.getString(1), rs.getString(2), rs.getString(3)));
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error de conexión:" + e.getMessage());
+        }
+
+        return accountList;
+    }
+    
+    public ArrayList<accountsRFmodel> getAccountsRF(int id_file) {
+        ArrayList<accountsRFmodel> accountList = new ArrayList<accountsRFmodel>();
+        try {
+            sql = "select fs.name,fs.type,fs.subtype,a.amount from accounts a inner join accounts_finance_state fs on a.id_finance_state = fs.id_finance_state  where id_file = " + id_file + "";
+            Statement s = conn.createStatement();
+            ResultSet rs = s.executeQuery(sql);
+
+            //rellenado de objeto
+            while (rs.next()) {
+                accountList.add(new accountsRFmodel(rs.getString(1), rs.getString(2), rs.getString(3),rs.getString(4)));
             }
 
         } catch (SQLException e) {
