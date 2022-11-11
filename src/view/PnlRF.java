@@ -7,41 +7,46 @@ package view;
 
 import controller.AccountsController;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import model.accountsRFmodel;
+import model.accountsTableModel;
 import model.accounts_finance_state;
 import model.file;
+import view.EF.FrmRF;
 
 /**
  *
  * @author Scarleth
  */
 public class PnlRF extends javax.swing.JPanel {
+
     AccountsController ac = new AccountsController();
     ArrayList<file> files;
     public int id_user;
     public String file_name;
     public int id_file;
+
     /**
      * Creates new form PnlRF
      */
-    public PnlRF(int id_user,String file_name, int id_file) {
+    public PnlRF(int id_user, String file_name, int id_file) {
         initComponents();
         files = ac.getFiles(id_user);
         char[] cadena;
         for (int i = 0; i < files.size(); i++) {
             cadena = files.get(i).getName().toCharArray();
-            if(cadena[0] == 'B' && cadena[1] == 'G'){
+            if (cadena[0] == 'B' && cadena[1] == 'G') {
                 cbxBG.addItem(files.get(i).getName());
-            }else if(cadena[0] == 'E' && cadena[1] == 'R'){
+            } else if (cadena[0] == 'E' && cadena[1] == 'R') {
                 cbxER.addItem(files.get(i).getName());
             }
         }
-        
+
         this.id_user = id_user;
         this.id_file = id_file;
         this.file_name = file_name;
         lblFileName.setText(file_name);
-        
+
     }
 
     /**
@@ -64,6 +69,16 @@ public class PnlRF extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         btnCalcular = new javax.swing.JButton();
         lblFileName = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        txtInventarioInicial = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        txtPorcentajeVentCred = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        txtCuentasPorCobrarIni = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        txtPorcentajeComCred = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        txtCuentasPorPagarIni = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(0, 0, 0));
         setMaximumSize(new java.awt.Dimension(700, 500));
@@ -116,75 +131,348 @@ public class PnlRF extends javax.swing.JPanel {
         lblFileName.setForeground(new java.awt.Color(204, 204, 204));
         lblFileName.setText("Nombre archivo");
 
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Inventario Inicial C$:");
+
+        txtInventarioInicial.setBackground(new java.awt.Color(0, 0, 0));
+        txtInventarioInicial.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        txtInventarioInicial.setForeground(new java.awt.Color(204, 204, 204));
+        txtInventarioInicial.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtInventarioInicial.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
+
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Ventas a credito %:");
+
+        txtPorcentajeVentCred.setBackground(new java.awt.Color(0, 0, 0));
+        txtPorcentajeVentCred.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        txtPorcentajeVentCred.setForeground(new java.awt.Color(204, 204, 204));
+        txtPorcentajeVentCred.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtPorcentajeVentCred.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
+
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Cuentas por cobrar iniciales C$:");
+
+        txtCuentasPorCobrarIni.setBackground(new java.awt.Color(0, 0, 0));
+        txtCuentasPorCobrarIni.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        txtCuentasPorCobrarIni.setForeground(new java.awt.Color(204, 204, 204));
+        txtCuentasPorCobrarIni.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtCuentasPorCobrarIni.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
+
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("Compras a credito %:");
+
+        txtPorcentajeComCred.setBackground(new java.awt.Color(0, 0, 0));
+        txtPorcentajeComCred.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        txtPorcentajeComCred.setForeground(new java.awt.Color(204, 204, 204));
+        txtPorcentajeComCred.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtPorcentajeComCred.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
+
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setText("Cuentas por pagar iniciales C$:");
+
+        txtCuentasPorPagarIni.setBackground(new java.awt.Color(0, 0, 0));
+        txtCuentasPorPagarIni.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        txtCuentasPorPagarIni.setForeground(new java.awt.Color(204, 204, 204));
+        txtCuentasPorPagarIni.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtCuentasPorPagarIni.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
                         .addComponent(lblFileName, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(51, 51, 51)
                         .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(181, 181, 181)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jLabel2)
                                 .addComponent(txtNombreEmpresa)
                                 .addComponent(cbxBG, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel4)
-                                .addComponent(cbxER, 0, 320, Short.MAX_VALUE))
+                                .addComponent(cbxER, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel5)
-                            .addComponent(jLabel6)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(264, 264, 264)
-                        .addComponent(btnCalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(174, Short.MAX_VALUE))
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel8)
+                            .addComponent(txtInventarioInicial, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+                            .addComponent(jLabel7)
+                            .addComponent(txtPorcentajeVentCred, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCuentasPorCobrarIni)
+                            .addComponent(jLabel10)
+                            .addComponent(txtPorcentajeComCred, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11)
+                            .addComponent(txtCuentasPorPagarIni))
+                        .addGap(62, 62, 62))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(269, 269, 269)
+                .addComponent(btnCalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(99, 99, 99))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(lblFileName))
+                                .addGap(40, 40, 40)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtNombreEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtInventarioInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel5)
+                        .addGap(5, 5, 5)
+                        .addComponent(jLabel6))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtPorcentajeVentCred, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(lblFileName))
-                .addGap(45, 45, 45)
-                .addComponent(jLabel2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCuentasPorCobrarIni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtNombreEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel5)
-                .addGap(5, 5, 5)
-                .addComponent(jLabel6)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbxBG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbxER, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCuentasPorPagarIni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(cbxBG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jLabel4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(cbxER, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel10)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txtPorcentajeComCred, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
                 .addComponent(btnCalcular)
-                .addContainerGap(88, Short.MAX_VALUE))
+                .addGap(37, 37, 37))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularActionPerformed
+        if(!txtNombreEmpresa.getText().equals("") && !txtCuentasPorCobrarIni.equals("") && !txtCuentasPorPagarIni.equals("") &&
+                !txtInventarioInicial.equals("") && !txtPorcentajeComCred.equals("") && !txtPorcentajeVentCred.equals("") && cbxBG.getSelectedIndex() > 0 && cbxER.getSelectedIndex() > 0){
+            //Nombres de los archivos
         String BG = cbxBG.getSelectedItem() + "";
         String ER = cbxER.getSelectedItem() + "";
-        
+
         //LISTA DE CUENTAS DE BALANCE GENERAL
         ArrayList<accountsRFmodel> listacuentasBG = ac.getAccountsRF(getIdFIle(BG));
         //LISTA DE CUENTAS DE ESTADO DE RESULTADO
         ArrayList<accountsRFmodel> listacuentasER = ac.getAccountsRF(getIdFIle(ER));
+        //Cuentas
+        ArrayList<accountsTableModel> cuentas = ac.getAccountsTable(getIdFIle(ER));
+
+        //VARIABLES SUELTAS
+        float porcentajeVentCred = Float.parseFloat(txtPorcentajeVentCred.getText()) / 100;
+        float ActivosCorrientes = 0;
+        float PasivosCorrientes = 0;
+        float InventarioInicial = Float.parseFloat(txtInventarioInicial.getText());
+        float Inventarios = 0;
+        float CostosMerVend = 0;
+        float cuentasporcobrar = 0;
+        float cuentasporpagar = 0;
+        float pi = 0;
+        float ri = 0;
+        float rcxc = 0;
+        float ventasCredito = 0;
+        float comprasCredito = 0;
+        float pasivoTot = 0;
+        float activoTot= 0;
+        float ventas = 0;
+        float capital =  0 ;
+        //TOTALES
+        float CNT = 0;
+        float IDS = 0;
+        float PA = 0;
+        float RI = 0;
+        float RC = 0;
+        float RCP = 0;
+        //////////
+        float RE = 0;
+        float RPC = 0;
+        ////////
+        float MBU = 0;
+        float RALP = 0;
+        float ROA = 0;
+        float UPA = 0;
         
         
+        
+        //Calculos
+        for (int i = 0; i < listacuentasBG.size(); i++) {
+            if (listacuentasBG.get(i).getTipo().equals("activo") && listacuentasBG.get(i).getSubTipo().equals("Circulante")) {
+                //suma de activos corrientes
+                ActivosCorrientes += Float.parseFloat(listacuentasBG.get(i).getMonto());
+            }
+            if (listacuentasBG.get(i).getTipo().equals("pasivo") && listacuentasBG.get(i).getSubTipo().equals("Circulante")) {
+                //suma de pasivos corrientes
+                PasivosCorrientes += Float.parseFloat(listacuentasBG.get(i).getMonto());
+            }
+            
+            if (listacuentasBG.get(i).getTipo().equals("pasivo")) {
+                //suma de pasivos 
+                pasivoTot += Float.parseFloat(listacuentasBG.get(i).getMonto());
+            }
+            
+            if (listacuentasBG.get(i).getTipo().equals("activo")) {
+                //suma de activos
+                activoTot += Float.parseFloat(listacuentasBG.get(i).getMonto());
+            }
+            
+            if (listacuentasBG.get(i).getCuenta().equals("Inventario") || listacuentasBG.get(i).getCuenta().equals("Inventarios")) {
+                Inventarios = Float.parseFloat(listacuentasBG.get(i).getMonto());
+            }
 
+            if (listacuentasBG.get(i).getCuenta().equals("Cuentas por cobrar")) {
+                cuentasporcobrar = Float.parseFloat(listacuentasBG.get(i).getMonto());
+            }
 
+            if (listacuentasBG.get(i).getCuenta().equals("Cuentas por pagar")) {
+                cuentasporpagar = Float.parseFloat(listacuentasBG.get(i).getMonto());
+            }
+            
+            if (listacuentasBG.get(i).getTipo().equals("capital")) {
+                //suma de capital
+                capital += Float.parseFloat(listacuentasBG.get(i).getMonto());
+            }
+        }
+
+        for (int j = 0; j < listacuentasER.size(); j++) {
+            if (listacuentasER.get(j).getTipo().equals("Costos")) {
+                CostosMerVend += Float.parseFloat(listacuentasER.get(j).getMonto());
+            }
+            if (listacuentasER.get(j).getCuenta().equals("Ingresos por ventas")) {
+                ventasCredito = Float.parseFloat(listacuentasER.get(j).getMonto()) * porcentajeVentCred;
+            }
+            
+            if (listacuentasER.get(j).getCuenta().equals("Ingresos por ventas")) {
+                ventas = Float.parseFloat(listacuentasER.get(j).getMonto());
+            }
+        }
+        //FORMULAS
+        CNT = ActivosCorrientes - PasivosCorrientes;
+        IDS = ActivosCorrientes / PasivosCorrientes;
+        PA = (ActivosCorrientes - Inventarios) / PasivosCorrientes;
+        ///
+        pi = (InventarioInicial + Inventarios) / 2;
+        ri = CostosMerVend / pi;
+        RI = 12 / ri;
+        //
+        
+        rcxc = ventasCredito / ((cuentasporcobrar + Float.parseFloat(txtCuentasPorCobrarIni.getText())) / 2);
+        RC = 360 / rcxc;
+        //
+        comprasCredito = CostosMerVend * (Float.parseFloat(txtPorcentajeComCred.getText()) / 100);
+        float aux = comprasCredito / (Float.parseFloat((txtCuentasPorPagarIni.getText()) + cuentasporpagar) / 2);
+        RCP = 360 / aux;
+        //
+        RE = (pasivoTot / activoTot)*100;
+        ///
+        RPC = activoTot / pasivoTot;
+        //
+        MBU = ((ventas - CostosMerVend)/ventas)*100;
+        //
+        RALP = 360/(ventas / activoTot);
+        ///
+        
+        ///CALCULO DE UTILIDADES 
+        //Total ingresos
+        float totingresos= 0;
+        //Total descuentos y devoluciones
+        float desdevtot = 0;
+        //Total costos
+        float totcostos = 0;
+        //Total gastos
+        float totgastos = 0;
+        //Ingresos no operacionales
+        float totingnoope = 0;
+        //Gastos no operacionales
+        float totgasnoope = 0;
+
+        for(int i = 0; i < cuentas.size(); i++){
+            switch (cuentas.get(i).getTipo()) {
+                case "Ingresos":
+                    totingresos += Float.parseFloat(cuentas.get(i).Monto);
+                    break;
+                case "Costos":
+                    totcostos += Float.parseFloat(cuentas.get(i).Monto);
+                    break;
+                case "Gastos":
+                    totgastos += Float.parseFloat(cuentas.get(i).Monto);
+                    break;
+                case "Ingresos No Operacionales":
+                    totingnoope += Float.parseFloat(cuentas.get(i).Monto);
+                    break;
+                case "Gastos No Operacionales":
+                    totgasnoope += Float.parseFloat(cuentas.get(i).Monto);
+                    break;
+                case "Descuentos":
+                case "Devolciones":
+                    desdevtot += Float.parseFloat(cuentas.get(i).Monto);
+                    break;
+                default:
+                    break;
+            }
+            
+        }
+        
+        totingresos -= desdevtot;
+        //utilidad bruta
+        float utilidadB = totingresos - totcostos;
+        //utilidad de operación
+        float utilidadOP = utilidadB - totgastos;
+        //Utilidad antes de impuestos
+        float utilidadantimp = utilidadOP + totingnoope - totgasnoope  ;
+        //Impuestos IR 30%
+        float porcentaje = 0.3f;
+        
+       
+        float impuestos = utilidadantimp * porcentaje;
+        //Utilidad neta
+        float utilidadneta = utilidadantimp - impuestos;
+        
+        ROA = (utilidadneta / activoTot)*100;
+        
+        ///
+        UPA = (utilidadneta / capital)*100;
+        
+        FrmRF rf = new FrmRF();
+        rf.setLocationRelativeTo(this);
+        rf.setVisible(true);
+        
+        rf.setData(redondearDecimales(CNT, 2) + "", redondearDecimales(IDS, 2) + "", redondearDecimales(PA, 2) + "", redondearDecimales(RI, 2) + "", redondearDecimales(RC, 2) + "", redondearDecimales(RCP, 2) + "",redondearDecimales(RE, 2) + "",redondearDecimales(RPC, 2) + "", redondearDecimales(MBU, 2) + "",redondearDecimales(RALP, 2) + "",redondearDecimales(ROA, 2) + "",redondearDecimales(UPA, 2) + "",txtNombreEmpresa.getText(), true, id_file,Float.parseFloat(txtInventarioInicial.getText()),Integer.parseInt(txtPorcentajeVentCred.getText()),Float.parseFloat(txtCuentasPorCobrarIni.getText()),Integer.parseInt(txtPorcentajeComCred.getText()),Float.parseFloat(txtCuentasPorPagarIni.getText()),BG,ER);
+        btnCalcular.setEnabled(false);
+        }
+        else{
+            JOptionPane.showMessageDialog(this,"Porfavor rellenar todos los campos");
+        }
     }//GEN-LAST:event_btnCalcularActionPerformed
     public int getIdFIle(String file) {
         int id_file = 0;
@@ -198,17 +486,37 @@ public class PnlRF extends javax.swing.JPanel {
         return id_file;
     }
 
+    public static float redondearDecimales(float valorInicial, int numeroDecimales) {
+        float parteEntera, resultado;
+        resultado = valorInicial;
+        parteEntera = (float) Math.floor(resultado);
+        resultado = (float) ((resultado - parteEntera) * Math.pow(10, numeroDecimales));
+        resultado = Math.round(resultado);
+        resultado = (float) ((resultado / Math.pow(10, numeroDecimales)) + parteEntera);
+        return resultado;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCalcular;
     private javax.swing.JComboBox<String> cbxBG;
     private javax.swing.JComboBox<String> cbxER;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     public javax.swing.JLabel lblFileName;
+    private javax.swing.JTextField txtCuentasPorCobrarIni;
+    private javax.swing.JTextField txtCuentasPorPagarIni;
+    private javax.swing.JTextField txtInventarioInicial;
     private javax.swing.JTextField txtNombreEmpresa;
+    private javax.swing.JTextField txtPorcentajeComCred;
+    private javax.swing.JTextField txtPorcentajeVentCred;
     // End of variables declaration//GEN-END:variables
 }

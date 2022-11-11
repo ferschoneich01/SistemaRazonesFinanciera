@@ -23,12 +23,8 @@ import model.accountsTableModel;
 import model.accounts_finance_state;
 import model.file;
 import model.file_detail;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.view.JasperViewer;
+import model.rfanalisis;
+
 
 /**
  *
@@ -248,6 +244,10 @@ public class AccountsController {
             ps.setInt(1, fileId); 
             ps.executeUpdate();
             
+            ps = conn.prepareStatement("DELETE FROM files_detail WHERE id_file = ?;");
+            ps.setInt(1, fileId); 
+            ps.executeUpdate();
+            
             ps = conn.prepareStatement("DELETE FROM files WHERE id_file = ?;");
             ps.setInt(1, fileId); 
             ps.executeUpdate();
@@ -269,32 +269,69 @@ public class AccountsController {
         }
     }
     
-    public void viewReportBG(int id_user, String file){
-        
+    
+
+    public void saveAnalisis(int file, String AL, String AR, String AE, float II,int VC,float CxCI,int CC,float CPI,String BG, String ER,String Empresa) {
+        PreparedStatement ps;
+        String sql;
+
+        try {
+            sql = "insert into rfanalisis(id_file,analisisL,analisisR,analisisE,InventarioI,ventasCred,CuentPorCobI,CompCred,CuentPorPagI,BG,ER,empresa) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, file);
+            ps.setString(2, AL);
+            ps.setString(3, AR);
+            ps.setString(4, AE);
+            ps.setFloat(5, II);
+            ps.setInt(6, VC);
+            ps.setFloat(7, CxCI);
+            ps.setInt(8, CC);
+            ps.setFloat(9, CPI);
+            ps.setString(10, BG);
+            ps.setString(11, ER);
+            ps.setString(12, Empresa);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error de conexión:" + e.getMessage());
+        }
+    }
+    
+    public rfanalisis getAnalisis(int file) {
+        rfanalisis analisis = new rfanalisis();
         try {
             
-            JasperReport reporte = null;
-            String path = "src\\view\\report\\reportBG.jasper";
-            
-            Map parametros  = new  HashMap();
-            parametros.put("user",id_user);
-            parametros.put("file",file);
-           
-            
-            
-            reporte = (JasperReport) JRLoader.loadObjectFromFile(path);
-           //JasperPrint jsubrep = JasperFillManager.
-            JasperPrint jprint = JasperFillManager.fillReport(reporte, parametros, conn);
-           
-            JasperViewer view = new JasperViewer(jprint, false);
-            
-            view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            
-            view.setVisible(true);
-        } catch (JRException ex) {
-            Logger.getLogger(AccountsController.class.getName()).log(Level.SEVERE, null, ex);
+            sql = "select * from rfanalisis where id_file = " + file ;
+            Statement s = conn.createStatement();
+            ResultSet rs = s.executeQuery(sql);
+
+            //rellenado de objeto
+            while (rs.next()) {
+               analisis = new rfanalisis(rs.getInt(1),rs.getInt(2), rs.getString(3), rs.getString(4),rs.getString(5),rs.getFloat(6),rs.getInt(7),rs.getFloat(8),rs.getInt(9),rs.getFloat(10),rs.getString(11),rs.getString(12),rs.getString(13));
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error de conexión:" + e.getMessage());
         }
-            
-        
+
+        return analisis;
     }
+    
+    public void deleteRF(int fileId) {
+         PreparedStatement ps;
+        try {
+            ps = conn.prepareStatement("DELETE FROM rfanalisis WHERE id_file = ?");
+            ps.setInt(1, fileId); 
+            ps.executeUpdate();
+            
+            
+            ps = conn.prepareStatement("DELETE FROM files WHERE id_file = ?;");
+            ps.setInt(1, fileId); 
+            ps.executeUpdate();
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error de conexión:" + e.getMessage());
+        }
+    }
+
+    
 }

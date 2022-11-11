@@ -8,11 +8,14 @@ package view;
 import controller.AccountsController;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import model.accountsRFmodel;
 import model.accountsTableModel;
 import model.file;
 import model.file_detail;
+import model.rfanalisis;
 import view.EF.FrmBG;
 import view.EF.FrmER;
+import view.EF.FrmRF;
 
 /**
  *
@@ -159,8 +162,15 @@ public class FrmMyFiles extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Porfavor seleccione un archivo");
             } else {
                 if (JOptionPane.showConfirmDialog(this, "¿Desea eliminar el archivo?") == 0) {
-
-                    ac.deleteFile(getIdFIle(fileList.get(obtenerIndiceSeleccionadoEnJTree(TreeFiles) - 1).getName()));
+                    char[] cad = fileList.get(obtenerIndiceSeleccionadoEnJTree(TreeFiles) - 1).getName().toCharArray();
+                    if(cad[0] == 'R'){
+                        ac.deleteRF(getIdFIle(fileList.get(obtenerIndiceSeleccionadoEnJTree(TreeFiles) - 1).getName()));
+                    }else{
+                        ac.deleteFile(getIdFIle(fileList.get(obtenerIndiceSeleccionadoEnJTree(TreeFiles) - 1).getName()));
+                    }
+                    
+                   
+                    updateTable();
                 }
             }
         } else {
@@ -318,7 +328,197 @@ public class FrmMyFiles extends javax.swing.JFrame {
 
                 }
                 if (cadena[0] == 'R' && cadena[1] == 'F') {
+                    //Nombres de los archivos
+        String BG = ac.getAnalisis(id_file).getBG();
+        String ER = ac.getAnalisis(id_file).getER();
 
+        //LISTA DE CUENTAS DE BALANCE GENERAL
+        ArrayList<accountsRFmodel> listacuentasBG = ac.getAccountsRF(getIdFIle(BG));
+        //LISTA DE CUENTAS DE ESTADO DE RESULTADO
+        ArrayList<accountsRFmodel> listacuentasER = ac.getAccountsRF(getIdFIle(ER));
+        //Cuentas
+        ArrayList<accountsTableModel> cuentas = ac.getAccountsTable(getIdFIle(ER));
+        
+        rfanalisis analis = ac.getAnalisis(id_file);
+        
+        //VARIABLES SUELTAS
+        float porcentajeVentCred = analis.getVC() / 100;
+        float ActivosCorrientes = 0;
+        float PasivosCorrientes = 0;
+        float InventarioInicial = analis.getII();
+        float Inventarios = 0;
+        float CostosMerVend = 0;
+        float cuentasporcobrar = 0;
+        float cuentasporpagar = 0;
+        float pi = 0;
+        float ri = 0;
+        float rcxc = 0;
+        float ventasCredito = 0;
+        float comprasCredito = 0;
+        float pasivoTot = 0;
+        float activoTot= 0;
+        float ventas = 0;
+        float capital =  0 ;
+        //TOTALES
+        float CNT = 0;
+        float IDS = 0;
+        float PA = 0;
+        float RI = 0;
+        float RC = 0;
+        float RCP = 0;
+        //////////
+        float RE = 0;
+        float RPC = 0;
+        ////////
+        float MBU = 0;
+        float RALP = 0;
+        float ROA = 0;
+        float UPA = 0;
+        
+        
+        
+        //Calculos
+        for (int i = 0; i < listacuentasBG.size(); i++) {
+            if (listacuentasBG.get(i).getTipo().equals("activo") && listacuentasBG.get(i).getSubTipo().equals("Circulante")) {
+                //suma de activos corrientes
+                ActivosCorrientes += Float.parseFloat(listacuentasBG.get(i).getMonto());
+            }
+            if (listacuentasBG.get(i).getTipo().equals("pasivo") && listacuentasBG.get(i).getSubTipo().equals("Circulante")) {
+                //suma de pasivos corrientes
+                PasivosCorrientes += Float.parseFloat(listacuentasBG.get(i).getMonto());
+            }
+            
+            if (listacuentasBG.get(i).getTipo().equals("pasivo")) {
+                //suma de pasivos 
+                pasivoTot += Float.parseFloat(listacuentasBG.get(i).getMonto());
+            }
+            
+            if (listacuentasBG.get(i).getTipo().equals("activo")) {
+                //suma de activos
+                activoTot += Float.parseFloat(listacuentasBG.get(i).getMonto());
+            }
+            
+            if (listacuentasBG.get(i).getCuenta().equals("Inventario") || listacuentasBG.get(i).getCuenta().equals("Inventarios")) {
+                Inventarios = Float.parseFloat(listacuentasBG.get(i).getMonto());
+            }
+
+            if (listacuentasBG.get(i).getCuenta().equals("Cuentas por cobrar")) {
+                cuentasporcobrar = Float.parseFloat(listacuentasBG.get(i).getMonto());
+            }
+
+            if (listacuentasBG.get(i).getCuenta().equals("Cuentas por pagar")) {
+                cuentasporpagar = Float.parseFloat(listacuentasBG.get(i).getMonto());
+            }
+            
+            if (listacuentasBG.get(i).getTipo().equals("capital")) {
+                //suma de capital
+                capital += Float.parseFloat(listacuentasBG.get(i).getMonto());
+            }
+        }
+
+        for (int j = 0; j < listacuentasER.size(); j++) {
+            if (listacuentasER.get(j).getTipo().equals("Costos")) {
+                CostosMerVend += Float.parseFloat(listacuentasER.get(j).getMonto());
+            }
+            if (listacuentasER.get(j).getCuenta().equals("Ingresos por ventas")) {
+                ventasCredito = Float.parseFloat(listacuentasER.get(j).getMonto()) * porcentajeVentCred;
+            }
+            
+            if (listacuentasER.get(j).getCuenta().equals("Ingresos por ventas")) {
+                ventas = Float.parseFloat(listacuentasER.get(j).getMonto());
+            }
+        }
+        //FORMULAS
+        CNT = ActivosCorrientes - PasivosCorrientes;
+        IDS = ActivosCorrientes / PasivosCorrientes;
+        PA = (ActivosCorrientes - Inventarios) / PasivosCorrientes;
+        ///
+        pi = (InventarioInicial + Inventarios) / 2;
+        ri = CostosMerVend / pi;
+        RI = 12 / ri;
+        //
+        
+        rcxc = ventasCredito / ((cuentasporcobrar + analis.getCxCI()) / 2);
+        RC = 360 / rcxc;
+        //
+        comprasCredito = CostosMerVend * (analis.getCC()/ 100);
+        float aux = comprasCredito / ((analis.getCPI() + cuentasporpagar) / 2);
+        RCP = 360 / aux;
+        //
+        RE = (pasivoTot / activoTot)*100;
+        ///
+        RPC = activoTot / pasivoTot;
+        //
+        MBU = ((ventas - CostosMerVend)/ventas)*100;
+        //
+        RALP = 360/(ventas / activoTot);
+        ///
+        
+        ///CALCULO DE UTILIDADES 
+        //Total ingresos
+        float totingresos= 0;
+        //Total descuentos y devoluciones
+        float desdevtot = 0;
+        //Total costos
+        float totcostos = 0;
+        //Total gastos
+        float totgastos = 0;
+        //Ingresos no operacionales
+        float totingnoope = 0;
+        //Gastos no operacionales
+        float totgasnoope = 0;
+
+        for(int i = 0; i < cuentas.size(); i++){
+            switch (cuentas.get(i).getTipo()) {
+                case "Ingresos":
+                    totingresos += Float.parseFloat(cuentas.get(i).Monto);
+                    break;
+                case "Costos":
+                    totcostos += Float.parseFloat(cuentas.get(i).Monto);
+                    break;
+                case "Gastos":
+                    totgastos += Float.parseFloat(cuentas.get(i).Monto);
+                    break;
+                case "Ingresos No Operacionales":
+                    totingnoope += Float.parseFloat(cuentas.get(i).Monto);
+                    break;
+                case "Gastos No Operacionales":
+                    totgasnoope += Float.parseFloat(cuentas.get(i).Monto);
+                    break;
+                case "Descuentos":
+                case "Devolciones":
+                    desdevtot += Float.parseFloat(cuentas.get(i).Monto);
+                    break;
+                default:
+                    break;
+            }
+            
+        }
+        
+        totingresos -= desdevtot;
+        //utilidad bruta
+        float utilidadB = totingresos - totcostos;
+        //utilidad de operación
+        float utilidadOP = utilidadB - totgastos;
+        //Utilidad antes de impuestos
+        float utilidadantimp = utilidadOP + totingnoope - totgasnoope  ;
+        //Impuestos IR 30%
+        float porcentaje = 0.3f;
+        
+       
+        float impuestos = utilidadantimp * porcentaje;
+        //Utilidad neta
+        float utilidadneta = utilidadantimp - impuestos;
+        
+        ROA = (utilidadneta / activoTot)*100;
+        
+        ///
+        UPA = (utilidadneta / capital)*100;
+        
+        FrmRF rf = new FrmRF();
+        rf.setLocationRelativeTo(this);
+        rf.setVisible(true);
+        rf.setData(redondearDecimales(CNT, 2) + "", redondearDecimales(IDS, 2) + "", redondearDecimales(PA, 2) + "", redondearDecimales(RI, 2) + "", redondearDecimales(RC, 2) + "", redondearDecimales(RCP, 2) + "",redondearDecimales(RE, 2) + "",redondearDecimales(RPC, 2) + "", redondearDecimales(MBU, 2) + "",redondearDecimales(RALP, 2) + "",redondearDecimales(ROA, 2) + "",redondearDecimales(UPA, 2) + "",analis.getEmpresa(), false, id_file,analis.getII(),analis.getVC(),analis.getCxCI(),analis.getCC(),analis.getCPI(),analis.getBG(),analis.getER());
                 }
 
             }
@@ -327,7 +527,16 @@ public class FrmMyFiles extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jButton2ActionPerformed
-
+    
+    public static float redondearDecimales(float valorInicial, int numeroDecimales) {
+        float parteEntera, resultado;
+        resultado = valorInicial;
+        parteEntera = (float) Math.floor(resultado);
+        resultado = (float) ((resultado - parteEntera) * Math.pow(10, numeroDecimales));
+        resultado = Math.round(resultado);
+        resultado = (float) ((resultado / Math.pow(10, numeroDecimales)) + parteEntera);
+        return resultado;
+    }
     private boolean fileSelected(javax.swing.JTree arbol) {
         // JTree auxiliar
         javax.swing.JTree aux = new javax.swing.JTree(arbol.getModel());
@@ -356,6 +565,11 @@ public class FrmMyFiles extends javax.swing.JFrame {
 
     public void setUser(int id_user) {
         this.id_user = id_user;
+        updateTable();
+
+    }
+    
+    public void updateTable(){
         AccountsController ac = new AccountsController();
         fileList = ac.getFiles(id_user);
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
@@ -377,9 +591,7 @@ public class FrmMyFiles extends javax.swing.JFrame {
         treeNode2.add(treeNode3);
         treeNode1.add(treeNode2);*/
         TreeFiles.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-
     }
-
     public int getIdFIle(String extension) {
         int id_file = 0;
         for (int j = 0; j < ac.getFiles(id_user).size(); j++) {

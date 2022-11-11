@@ -5,7 +5,9 @@
  */
 package view.EF;
 
+import controller.AccountsController;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import model.accountsTableModel;
 
 /**
@@ -13,21 +15,56 @@ import model.accountsTableModel;
  * @author Scarleth
  */
 public class FrmRF extends javax.swing.JFrame {
-
+    AccountsController ac = new AccountsController();
+    public int id_file;
+    public float C1,C3,C5;
+    public int C2,C4;
+    public String BG,ER;
     /**
      * Creates new form FrmRF
      */
     public FrmRF() {
         initComponents();
     }
-    
-    
+
     //DATASET
-    public void setData(ArrayList<accountsTableModel> cuentas,String Empresa,boolean activo){
-        txtAnalisisE.setEditable(activo);
+    public void setData(String CNT, String IDS, String PA, String RI, String RC, String RCP, String RE, String RPC, String MBU, String RALP, String ROA, String UPA, String Empresa, boolean activo,int id_file,
+            float C1,int C2, float C3, int C4, float C5,String BG,String ER) {
+        lblCNT.setText(CNT);
+        lblIS.setText(IDS);
+        lblPA.setText(PA);
+        lblRI.setText(RI);
+        lblRC.setText(RC);
+        lblRCP.setText(RCP);
+        lblRE.setText(RE);
+        lblRPC.setText(RPC);
+        lblMBU.setText(MBU);
+        lblRALP.setText(RALP);
+        lblROA.setText(ROA);
+        lblUA.setText(UPA);
+        
+        lblEmpresa.setText(Empresa);
+        this.id_file = id_file;
+        this.BG = BG;
+        this.ER = ER;
+        this.C1 = C1;
+         this.C2 = C2;
+          this.C3 = C3;
+           this.C4 = C4;
+            this.C5 = C5;
+            
+            if(activo == false){
+                txtAnalisisE.setText(ac.getAnalisis(id_file).getAE());
+                txtAnalisisL.setText(ac.getAnalisis(id_file).getAL());
+                txtAnalisisR.setText(ac.getAnalisis(id_file).getAR());
+                
+            }
+            txtAnalisisE.setEditable(activo);
         txtAnalisisL.setEditable(activo);
         txtAnalisisR.setEditable(activo);
+        btnGuardar.setVisible(activo);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -59,7 +96,7 @@ public class FrmRF extends javax.swing.JFrame {
         txtAnalisisR = new javax.swing.JTextArea();
         jSeparator7 = new javax.swing.JSeparator();
         jLabel13 = new javax.swing.JLabel();
-        lblRDLI = new javax.swing.JLabel();
+        lblROA = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         lblUA = new javax.swing.JLabel();
@@ -89,9 +126,10 @@ public class FrmRF extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         txtAnalisisL = new javax.swing.JTextArea();
         jLabel10 = new javax.swing.JLabel();
+        btnGuardar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("BALANCE GENERAL");
+        setTitle("RAZONES FINANCIERAS");
         setMinimumSize(new java.awt.Dimension(700, 500));
         setResizable(false);
 
@@ -116,7 +154,7 @@ public class FrmRF extends javax.swing.JFrame {
         jLabel18.setText("RAZÓN DE ENDEUDAMIENTO =");
 
         lblRPC.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        lblRPC.setForeground(new java.awt.Color(0, 0, 0));
+        lblRPC.setForeground(new java.awt.Color(0, 51, 204));
         lblRPC.setText("0000");
 
         jLabel19.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -133,7 +171,7 @@ public class FrmRF extends javax.swing.JFrame {
         jLabel20.setText("RAZÓN PASIVO - CAPITAL =");
 
         lblRE.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        lblRE.setForeground(new java.awt.Color(0, 0, 0));
+        lblRE.setForeground(new java.awt.Color(0, 51, 204));
         lblRE.setText("0000");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -192,7 +230,7 @@ public class FrmRF extends javax.swing.JFrame {
         jLabel11.setText("MARGEN BRUTO DE UTILIDAD =");
 
         lblMBU.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        lblMBU.setForeground(new java.awt.Color(0, 0, 0));
+        lblMBU.setForeground(new java.awt.Color(0, 0, 255));
         lblMBU.setText("0000");
 
         jLabel12.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -208,9 +246,9 @@ public class FrmRF extends javax.swing.JFrame {
         jLabel13.setForeground(new java.awt.Color(0, 0, 0));
         jLabel13.setText("ROTACIÓN DEL ACTIVO L/P =");
 
-        lblRDLI.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        lblRDLI.setForeground(new java.awt.Color(0, 0, 0));
-        lblRDLI.setText("0000");
+        lblROA.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        lblROA.setForeground(new java.awt.Color(0, 0, 255));
+        lblROA.setText("0000");
 
         jLabel14.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(0, 0, 0));
@@ -221,11 +259,11 @@ public class FrmRF extends javax.swing.JFrame {
         jLabel15.setText("UTILIDAD POR ACCIÓN =");
 
         lblUA.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        lblUA.setForeground(new java.awt.Color(0, 0, 0));
+        lblUA.setForeground(new java.awt.Color(0, 0, 255));
         lblUA.setText("0000");
 
         lblRALP.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        lblRALP.setForeground(new java.awt.Color(0, 0, 0));
+        lblRALP.setForeground(new java.awt.Color(0, 0, 255));
         lblRALP.setText("0000");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -242,7 +280,7 @@ public class FrmRF extends javax.swing.JFrame {
                                 .addGroup(jPanel4Layout.createSequentialGroup()
                                     .addComponent(jLabel14)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(lblRDLI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(lblROA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGroup(jPanel4Layout.createSequentialGroup()
                                     .addComponent(jLabel15)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -295,7 +333,7 @@ public class FrmRF extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel14)
-                            .addComponent(lblRDLI))
+                            .addComponent(lblROA))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jSeparator16, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -314,7 +352,7 @@ public class FrmRF extends javax.swing.JFrame {
         jLabel4.setText("CAPITAL NETO DE TRABAJO =");
 
         lblCNT.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        lblCNT.setForeground(new java.awt.Color(0, 0, 0));
+        lblCNT.setForeground(new java.awt.Color(0, 0, 255));
         lblCNT.setText("0000");
 
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -322,7 +360,7 @@ public class FrmRF extends javax.swing.JFrame {
         jLabel5.setText("INDICE DE SOLVENCIA =");
 
         lblIS.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        lblIS.setForeground(new java.awt.Color(0, 0, 0));
+        lblIS.setForeground(new java.awt.Color(0, 0, 255));
         lblIS.setText("0000");
 
         jLabel6.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -330,7 +368,7 @@ public class FrmRF extends javax.swing.JFrame {
         jLabel6.setText("PRUEBA ACIDA =");
 
         lblPA.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        lblPA.setForeground(new java.awt.Color(0, 0, 0));
+        lblPA.setForeground(new java.awt.Color(0, 0, 255));
         lblPA.setText("0000");
 
         jLabel7.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -338,7 +376,7 @@ public class FrmRF extends javax.swing.JFrame {
         jLabel7.setText("ROTACIÓN DE INVENTARIO =");
 
         lblRI.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        lblRI.setForeground(new java.awt.Color(0, 0, 0));
+        lblRI.setForeground(new java.awt.Color(0, 0, 255));
         lblRI.setText("0000");
 
         jLabel8.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -346,14 +384,14 @@ public class FrmRF extends javax.swing.JFrame {
         jLabel8.setText("ROTACIÓN DE CARTERAS =");
 
         lblRC.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        lblRC.setForeground(new java.awt.Color(0, 0, 0));
+        lblRC.setForeground(new java.awt.Color(0, 0, 255));
         lblRC.setText("0000");
 
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
         jLabel9.setText("ROTACIÓN DE CUENTAS POR PAGAR C/P =");
 
         lblRCP.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        lblRCP.setForeground(new java.awt.Color(0, 0, 0));
+        lblRCP.setForeground(new java.awt.Color(0, 0, 255));
         lblRCP.setText("0000");
 
         txtAnalisisL.setColumns(20);
@@ -474,6 +512,17 @@ public class FrmRF extends javax.swing.JFrame {
 
         TbpContentRF.addTab("LIQUIDEZ", jPanel2);
 
+        btnGuardar.setBackground(new java.awt.Color(0, 51, 255));
+        btnGuardar.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/content-save.png"))); // NOI18N
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -481,14 +530,17 @@ public class FrmRF extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(162, 162, 162)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(RF, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(52, 52, 52)
-                        .addComponent(TbpContentRF, javax.swing.GroupLayout.PREFERRED_SIZE, 639, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(51, Short.MAX_VALUE))
+                        .addComponent(TbpContentRF, javax.swing.GroupLayout.PREFERRED_SIZE, 639, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(312, 312, 312)
+                        .addComponent(btnGuardar))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(168, 168, 168)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(RF, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -499,7 +551,9 @@ public class FrmRF extends javax.swing.JFrame {
                 .addComponent(RF, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(TbpContentRF, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         jScrollPane1.setViewportView(jPanel1);
@@ -508,6 +562,16 @@ public class FrmRF extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        
+        ac.saveAnalisis(id_file, txtAnalisisL.getText(), txtAnalisisR.getText(), txtAnalisisE.getText(),C1,C2,C3,C4,C5,BG,ER,lblEmpresa.getText());
+        JOptionPane.showMessageDialog(this,"Guardado correctamente.");
+        btnGuardar.setEnabled(false);
+        txtAnalisisE.setEditable(false);
+        txtAnalisisL.setEditable(false);
+        txtAnalisisR.setEditable(false);
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -548,6 +612,7 @@ public class FrmRF extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel RF;
     private javax.swing.JTabbedPane TbpContentRF;
+    private javax.swing.JButton btnGuardar;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -590,9 +655,9 @@ public class FrmRF extends javax.swing.JFrame {
     private javax.swing.JLabel lblRALP;
     private javax.swing.JLabel lblRC;
     private javax.swing.JLabel lblRCP;
-    private javax.swing.JLabel lblRDLI;
     private javax.swing.JLabel lblRE;
     private javax.swing.JLabel lblRI;
+    private javax.swing.JLabel lblROA;
     private javax.swing.JLabel lblRPC;
     private javax.swing.JLabel lblUA;
     public javax.swing.JTextArea txtAnalisisE;
